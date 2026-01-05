@@ -1,12 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Hero } from '@/components/studio/Hero';
+import { Philosophy } from '@/components/studio/Philosophy';
+import { Portfolio } from '@/components/studio/Portfolio';
+import { Contact } from '@/components/studio/Contact';
+import { Footer } from '@/components/studio/Footer';
+import { Navigation } from '@/components/studio/Navigation';
+import { CustomCursor } from '@/components/studio/CustomCursor';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="grain">
+      <CustomCursor />
+      <Navigation />
+      
+      <main>
+        <Hero />
+        <Philosophy />
+        <section id="portfolio">
+          <Portfolio />
+        </section>
+        <section id="contact">
+          <Contact />
+        </section>
+      </main>
+      
+      <Footer />
     </div>
   );
 };
