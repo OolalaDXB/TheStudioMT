@@ -1,76 +1,59 @@
 import { motion } from 'framer-motion';
-import { AnimatedText, FadeUpText } from './AnimatedText';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
-      {/* Subtle gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-platinum/5 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gold/5 blur-3xl" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-5xl mx-auto">
-        {/* Logo / Brand */}
+    <header className="min-h-screen flex flex-col justify-center py-16 md:py-24 relative">
+      <div className="container max-w-[700px] mx-auto px-8">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="font-display text-7xl md:text-8xl lg:text-9xl tracking-tight">
-            <AnimatedText text="The Studio" className="text-foreground" delay={0.1} />
+          {/* Logo */}
+          <h1 className="font-display text-[clamp(2.5rem,6vw,4rem)] font-light tracking-[-0.02em] text-primary mb-2">
+            The Studio <span className="font-medium">MT</span>
           </h1>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-4"
-          >
-            <span className="font-display text-2xl md:text-3xl text-muted-foreground italic tracking-wide">
-              MT
-            </span>
-          </motion.div>
-        </motion.div>
-
-        {/* Tagline */}
-        <FadeUpText delay={0.5} className="mb-16">
-          <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
-            Building ventures at the intersection of
-            <span className="text-foreground font-normal"> ambition </span>
-            and
-            <span className="text-foreground font-normal"> execution</span>
+          
+          {/* Tagline */}
+          <p className="font-body text-sm font-normal tracking-[0.15em] uppercase text-muted-foreground mb-16">
+            Independent Venture Studio
           </p>
-        </FadeUpText>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 1 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-2"
-          >
-            <span className="text-xs tracking-[0.3em] text-muted-foreground uppercase">
-              Explore
-            </span>
-            <div className="w-px h-12 bg-gradient-to-b from-muted-foreground/50 to-transparent" />
-          </motion.div>
+          
+          {/* Statement */}
+          <div className="font-display text-[clamp(1.25rem,2.5vw,1.5rem)] font-light leading-[1.8] text-foreground">
+            <p className="mb-4">
+              I design, build, and operate long-term systems.<br />
+              Some projects scale. Some remain intentionally small.<br />
+              <span className="italic text-warm-muted">Some stop on purpose.</span>
+            </p>
+          </div>
+          
+          {/* Anchor */}
+          <div className="mt-16 pt-8 border-t border-border">
+            <p className="font-body text-[0.9375rem] font-normal tracking-[0.03em] text-muted-foreground leading-[1.8]">
+              Product · Capital · Operations.<br />
+              From first sketch to running reality.
+            </p>
+          </div>
         </motion.div>
       </div>
-
-      {/* Bottom decorative line */}
+      
+      {/* Scroll indicator */}
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 0.6, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent origin-center"
-      />
-    </section>
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <span className="text-[0.7rem] tracking-[0.2em] uppercase text-muted-foreground">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-10 bg-gradient-to-b from-primary to-transparent"
+        />
+      </motion.div>
+    </header>
   );
 }
