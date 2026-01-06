@@ -21,7 +21,7 @@ const capabilities: Capability[] = [
   },
   {
     title: 'International',
-    items: ['Multi-jurisdiction structures', 'Emerging market entry', 'Cross-border operations', 'Multilingual UX', 'Remote team setup'],
+    items: ['Multi-jurisdiction structures', 'Business development & partnerships', 'Cross-border operations', 'Ecosystem design', 'Commercial strategy'],
   },
 ];
 
@@ -83,7 +83,7 @@ export function Capabilities() {
             Capabilities
           </h2>
           <p className="font-display text-2xl md:text-3xl text-foreground/80 max-w-2xl leading-relaxed">
-            From early concept to operational systems—strategy, design, build.
+            Strategy, architecture, execution. From early concept to running system.
           </p>
         </motion.header>
 
