@@ -42,7 +42,7 @@ export function Footer() {
           </div>
           
           {/* Bottom */}
-          <div className="text-xs text-muted-foreground tracking-[0.15em] text-center md:text-right">
+          <div className="text-xs text-muted-foreground tracking-[0.15em] text-center">
             Dubai · Paris · Brittany · Tbilisi
           </div>
         </motion.div>
