@@ -9,19 +9,19 @@ interface Capability {
 const capabilities: Capability[] = [
   {
     title: 'Product & Design',
-    items: ['Product strategy', 'UX/UI design', 'Brand identity', 'Information architecture', 'Design systems'],
+    items: ['Product strategy', 'UX/UI systems', 'Brand architecture', 'Information structure', 'Design systems'],
   },
   {
     title: 'Finance & Operations',
-    items: ['Financial modeling', 'Unit economics', 'Investor materials', 'Business architecture', 'Pricing strategy'],
+    items: ['Financial modeling', 'Unit economics', 'Investor materials', 'Business architecture', 'Pricing systems'],
   },
   {
     title: 'Technology',
-    items: ['Full-stack development', 'Database architecture', 'API design', 'E-commerce systems', 'Custom tooling'],
+    items: ['System implementation (full-stack)', 'Database architecture', 'Interfaces & integrations', 'E-commerce systems', 'Operational tooling'],
   },
   {
     title: 'International',
-    items: ['Multi-jurisdiction structures', 'Business development & partnerships', 'Cross-border operations', 'Ecosystem design', 'Commercial strategy'],
+    items: ['Multi-jurisdiction structures', 'Business development', 'Cross-border operations', 'Ecosystem design', 'Commercial strategy'],
   },
 ];
 
