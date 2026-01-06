@@ -8,13 +8,42 @@ export function Footer() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row justify-between items-center gap-4"
+          className="flex flex-col gap-8"
         >
-          <div className="font-display text-lg font-normal text-primary">
-            Studio MT
+          {/* Top row */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            {/* Left */}
+            <div>
+              <div className="font-display text-xl font-normal text-foreground">
+                The Studio MT
+              </div>
+              <div className="text-sm text-muted-foreground mt-1">
+                Independent venture studio
+              </div>
+            </div>
+            
+            {/* Right */}
+            <div className="flex flex-col items-start md:items-end gap-2">
+              <a 
+                href="https://www.linkedin.com/in/mickaelthomas/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm text-foreground hover:text-primary transition-colors link-underline"
+              >
+                LinkedIn ↗
+              </a>
+              <a 
+                href="mailto:mt@thestudio.mt"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                mt@thestudio.mt
+              </a>
+            </div>
           </div>
-          <div className="text-sm text-muted-foreground tracking-[0.1em]">
-            Based in Dubai · From Brittany
+          
+          {/* Bottom */}
+          <div className="text-xs text-muted-foreground tracking-[0.15em] text-center md:text-right">
+            Dubai · Paris · Brittany · Tbilisi
           </div>
         </motion.div>
       </div>
