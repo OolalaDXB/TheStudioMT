@@ -120,7 +120,7 @@ export function Capabilities() {
               </div>
 
               {/* Items list */}
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {capability.items.map((item, itemIndex) => (
                   <motion.li
                     key={item}
@@ -132,7 +132,7 @@ export function Capabilities() {
                       delay: 0.4 + index * 0.1 + itemIndex * 0.05,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="font-body text-sm text-muted-foreground leading-relaxed"
+                    className="font-body text-sm text-muted-foreground leading-relaxed py-1.5 px-2 -mx-2 rounded-md transition-all duration-300 cursor-default hover:bg-foreground/[0.03] hover:text-foreground hover:translate-x-1"
                   >
                     {item}
                   </motion.li>
