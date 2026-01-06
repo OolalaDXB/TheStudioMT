@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { VentureCard } from './VentureCard';
 
 // Import portfolio images
@@ -122,37 +123,70 @@ const categories: Category[] = [
   },
 ];
 
+function CategorySection({ category, categoryIndex }: { category: Category; categoryIndex: number }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
+  return (
+    <section
+      ref={sectionRef}
+      key={category.title}
+      className="py-16 md:py-24 border-t border-border relative overflow-hidden"
+    >
+      {/* Parallax background accent */}
+      <motion.div
+        style={{ y: backgroundY }}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <div
+          className="absolute w-[500px] h-[500px] rounded-full bg-primary/[0.015] blur-3xl"
+          style={{
+            top: categoryIndex % 2 === 0 ? '10%' : '40%',
+            left: categoryIndex % 2 === 0 ? '-10%' : 'auto',
+            right: categoryIndex % 2 === 0 ? 'auto' : '-10%',
+          }}
+        />
+      </motion.div>
+
+      <div className="container max-w-[1200px] mx-auto px-8 relative z-10">
+        {/* Section header */}
+        <motion.header
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16"
+        >
+          <h2 className="font-body text-[0.9375rem] font-medium tracking-[0.15em] uppercase text-primary">
+            {category.title}
+          </h2>
+        </motion.header>
+
+        {/* Ventures grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-8">
+          {category.ventures.map((venture, ventureIndex) => (
+            <VentureCard key={venture.name} {...venture} index={ventureIndex} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function Portfolio() {
   return (
     <main>
       {categories.map((category, categoryIndex) => (
-        <section key={category.title} className="py-16 md:py-24 border-t border-border">
-          <div className="container max-w-[1200px] mx-auto px-8">
-            {/* Section header */}
-            <motion.header
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="mb-16"
-            >
-              <h2 className="font-body text-[0.9375rem] font-medium tracking-[0.15em] uppercase text-primary">
-                {category.title}
-              </h2>
-            </motion.header>
-
-            {/* Ventures grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-8">
-              {category.ventures.map((venture, ventureIndex) => (
-                <VentureCard
-                  key={venture.name}
-                  {...venture}
-                  index={ventureIndex}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        <CategorySection
+          key={category.title}
+          category={category}
+          categoryIndex={categoryIndex}
+        />
       ))}
     </main>
   );

@@ -1,9 +1,32 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 
 export function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <header className="min-h-screen flex flex-col justify-center py-16 md:py-24 relative">
-      <div className="container max-w-[700px] mx-auto px-8">
+    <header ref={heroRef} className="min-h-screen flex flex-col justify-center py-16 md:py-24 relative overflow-hidden">
+      {/* Parallax background elements */}
+      <motion.div
+        style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '50%']) }}
+        className="absolute top-20 right-10 w-[300px] h-[300px] rounded-full bg-primary/[0.02] blur-3xl pointer-events-none"
+      />
+      <motion.div
+        style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '30%']) }}
+        className="absolute bottom-40 left-0 w-[400px] h-[400px] rounded-full bg-accent/[0.03] blur-3xl pointer-events-none"
+      />
+
+      <motion.div 
+        style={{ y: textY, opacity: textOpacity }}
+        className="container max-w-[700px] mx-auto px-8 relative z-10"
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,13 +59,14 @@ export function Hero() {
             </p>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
       
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
+        style={{ opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0]) }}
         className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span className="text-[0.7rem] tracking-[0.2em] uppercase text-muted-foreground">
