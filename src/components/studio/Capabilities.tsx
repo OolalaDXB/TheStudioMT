@@ -20,7 +20,7 @@ const capabilities: Capability[] = [
     items: ['System implementation (full-stack)', 'Database architecture', 'Interfaces & integrations', 'E-commerce systems', 'Operational tooling'],
   },
   {
-    title: 'International',
+    title: 'International BD',
     items: ['Multi-jurisdiction structures', 'Business development', 'Cross-border operations', 'Ecosystem design', 'Commercial strategy'],
   },
 ];
