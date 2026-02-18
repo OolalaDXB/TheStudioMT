@@ -33,17 +33,17 @@ export function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Logo */}
-          <h1 className="font-display text-[clamp(5rem,12vw,8rem)] font-light tracking-[-0.02em] text-primary mb-2">
+          <h1 className="font-display text-[clamp(3rem,7vw,8rem)] font-light tracking-[-0.02em] text-primary mb-2">
             The Studio <span className="font-medium">MT</span>
           </h1>
           
           {/* Tagline */}
-          <p className="font-body text-[1.75rem] font-normal tracking-[0.15em] uppercase text-muted-foreground mb-16">
+          <p className="font-body text-base md:text-xl xl:text-[1.75rem] font-normal tracking-[0.15em] uppercase text-muted-foreground mb-10 md:mb-16">
             Independent Venture Studio
           </p>
           
           {/* Statement */}
-          <div className="font-display text-[clamp(2.5rem,5vw,3rem)] font-light leading-[1.8] text-foreground">
+          <div className="font-display text-[clamp(1.5rem,3vw,3rem)] font-light leading-[1.7] text-foreground">
             <p className="mb-4">
               I design, build, and operate long-term systems.<br />
               Some projects scale. Some remain intentionally small.<br />
@@ -52,8 +52,8 @@ export function Hero() {
           </div>
           
           {/* Anchor */}
-          <div className="mt-16 pt-8 border-t border-border">
-            <p className="font-body text-[1.875rem] font-normal tracking-[0.03em] text-muted-foreground leading-[1.8]">
+          <div className="mt-10 md:mt-16 pt-8 border-t border-border">
+            <p className="font-body text-base md:text-xl xl:text-[1.875rem] font-normal tracking-[0.03em] text-muted-foreground leading-[1.8]">
               Product · Capital · Operations.<br />
               From first sketch to running reality.
             </p>

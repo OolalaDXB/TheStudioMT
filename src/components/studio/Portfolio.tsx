@@ -225,7 +225,7 @@ function CategorySection({ category, categoryIndex }: { category: Category; cate
         </motion.header>
 
         {/* Ventures grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-6 md:gap-8">
           {category.ventures.map((venture, ventureIndex) => (
             <VentureCard key={venture.name} {...venture} index={ventureIndex} />
           ))}
