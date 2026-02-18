@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -71,70 +71,85 @@ export function VentureCard({
       {/* Image area */}
       {stackedImages ? (
         <div className="overflow-hidden">
-          {/* Hero image — large */}
-          <div className="h-[240px] overflow-hidden">
+          <div className="h-[240px] overflow-hidden relative group/img">
             <img
               src={stackedImages.hero}
               alt={`${name} hero`}
-              className="w-full h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
             />
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                className="absolute inset-0 bg-primary/20 pointer-events-none"
+              />
+            </AnimatePresence>
           </div>
-          {/* Small image — dashboard/secondary */}
-          <div className="h-[120px] overflow-hidden border-t border-border">
+          <div className="h-[120px] overflow-hidden border-t border-border relative">
             <img
               src={stackedImages.small}
               alt={`${name} dashboard`}
-              className="w-full h-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
             />
           </div>
         </div>
       ) : splitImages ? (
         <div className="flex flex-col overflow-hidden">
           <div className={cn("flex overflow-hidden", splitPortrait ? "h-[420px]" : "h-[280px]")}>
-            {url ? (
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="split-image-link w-1/2 overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img
-                  src={splitImages.left}
-                  alt={`${name} left`}
-                  className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-center")}
-                />
-              </a>
-            ) : (
+            {/* Left split image */}
+            <a
+              href={url || undefined}
+              target={url ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className={cn("split-image-link relative overflow-hidden", url ? "cursor-pointer" : "cursor-default pointer-events-none", "w-1/2")}
+              onClick={(e) => { e.stopPropagation(); if (!url) e.preventDefault(); }}
+            >
               <img
                 src={splitImages.left}
                 alt={`${name} left`}
-                className={cn("w-1/2 h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-center")}
+                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-center")}
               />
-            )}
-            {secondaryUrl ? (
-              <a
-                href={secondaryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="split-image-link w-1/2 overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img
-                  src={splitImages.right}
-                  alt={`${name} right`}
-                  className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-top-left")}
-                />
-              </a>
-            ) : (
+              {url && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute inset-0 bg-primary/25 flex items-center justify-center"
+                >
+                  <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
+                    Ouvrir ↗
+                  </span>
+                </motion.div>
+              )}
+            </a>
+            {/* Right split image */}
+            <a
+              href={secondaryUrl || url || undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn("split-image-link relative overflow-hidden border-l border-border/50", (secondaryUrl || url) ? "cursor-pointer" : "cursor-default pointer-events-none", "w-1/2")}
+              onClick={(e) => { e.stopPropagation(); if (!secondaryUrl && !url) e.preventDefault(); }}
+            >
               <img
                 src={splitImages.right}
                 alt={`${name} right`}
-                className={cn("w-1/2 h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-top-left")}
+                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-top-left")}
               />
-            )}
+              {(secondaryUrl || url) && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute inset-0 bg-primary/25 flex items-center justify-center"
+                >
+                  <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
+                    {secondaryUrl ? 'App Demo ↗' : 'Ouvrir ↗'}
+                  </span>
+                </motion.div>
+              )}
+            </a>
           </div>
-          {/* Labels for split images when there are dual links */}
+          {/* Labels */}
           {(url || secondaryUrl) && (
             <div className="flex border-t border-border">
               <div className="w-1/2 px-4 py-1.5 text-xs text-muted-foreground text-center border-r border-border">
@@ -148,11 +163,37 @@ export function VentureCard({
         </div>
       ) : (
         <div className="h-[280px] overflow-hidden relative">
-          <img
-            src={image}
-            alt={name}
-            className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", imagePosition)}
-          />
+          {url ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="split-image-link block w-full h-full relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={image}
+                alt={name}
+                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)}
+              />
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
+                className="absolute inset-0 bg-primary/25 flex items-center justify-center"
+              >
+                <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
+                  Ouvrir ↗
+                </span>
+              </motion.div>
+            </a>
+          ) : (
+            <img
+              src={image}
+              alt={name}
+              className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)}
+            />
+          )}
           {badge && (
             <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
               {badge}
