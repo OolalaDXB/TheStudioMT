@@ -67,7 +67,7 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Bawaba',
-        description: 'Security gateway between AI agents and enterprise systems. Enforces authentication, PII protection, sovereign data routing, and tamper-proof audit on every call. Built in Go and Rust for regulated financial institutions across MENA and EU. Open-source core.',
+        description: 'Sovereign AI control plane for regulated industries. MCP reverse proxy.',
         execution: 'Architecture · Go + Rust backend · PII tokenizer · CISO dashboard',
         detail: 'MCP (Model Context Protocol) reverse proxy that enforces authentication, authorization, PII tokenization, sovereign data routing, and cryptographic audit trails for AI agents in regulated financial institutions. 8-stage fail-closed pipeline: Parse → Auth → Rate Limit → Policy → PII Tokenize → Sovereign Route → Execute → Audit. Backend in Go (2,650 LOC) + Rust PII tokenizer (355 LOC) with 7 MENA-specific PII regex patterns (IBAN, Morocco CIN, KSA NID/Iqama, UAE Emirates ID, Luhn credit card). Ed25519-signed hash-chain audit trail. Jurisdiction-based routing: Morocco (Inwi DC Casa), Saudi (STC Cloud Riyadh), UAE (G42 Abu Dhabi), EU (Hetzner Frankfurt). Docker-ready. 26 tests passing. Phase 1 complete.',
         image: bawabaImg,
@@ -84,7 +84,7 @@ const categories: Category[] = [
         execution: 'Product design · Per-view architecture · Wallet integration · Stripe',
         detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
         image: myoolalaLandingImg,
-        stackedImages: { hero: myoolalaLandingImg, small: myoolalaAppImg },
+        splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
         url: 'https://myoolala.com',
       },
     ],
