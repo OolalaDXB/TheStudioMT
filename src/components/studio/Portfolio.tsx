@@ -19,6 +19,7 @@ import maisonsDashboardImg from '@/assets/portfolio/maisons-dashboard.png';
 import lesvieillespierresImg from '@/assets/portfolio/lesvieillespierres.png';
 import livegreatImg from '@/assets/portfolio/livegreat.png';
 import sillonImg from '@/assets/portfolio/sillon.png';
+import sillonDashboardImg from '@/assets/portfolio/sillon-dashboard.png';
 
 // Placeholder for ventures without images yet
 const placeholderImg = '/placeholder.svg';
@@ -91,7 +92,7 @@ const categories: Category[] = [
         execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
         detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
         image: sillonImg,
-        splitImages: { left: sillonImg, right: placeholderImg },
+        splitImages: { left: sillonImg, right: sillonDashboardImg },
         url: 'https://sillon.app',
       },
     ],
