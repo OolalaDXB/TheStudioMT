@@ -66,18 +66,18 @@ export function VentureCard({
       {stackedImages ? (
         <div className="overflow-hidden">
           {/* Hero image — large */}
-          <div className="h-[240px] overflow-hidden">
+          <div className="h-[220px] overflow-hidden">
             <img
               src={stackedImages.hero}
               alt={`${name} hero`}
-              className="w-full h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.02]"
             />
           </div>
-          {/* Small image — dashboard/secondary */}
-          <div className="h-[120px] overflow-hidden border-t border-border">
+          {/* Small image — app/secondary */}
+          <div className="h-[140px] overflow-hidden border-t border-border">
             <img
               src={stackedImages.small}
-              alt={`${name} dashboard`}
+              alt={`${name} app`}
               className="w-full h-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.02]"
             />
           </div>
