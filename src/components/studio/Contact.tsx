@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export function Contact() {
   return (
-    <section className="py-32 md:py-48 text-center">
+    <section className="py-16 md:py-24 text-center">
       <div className="container max-w-[1200px] mx-auto px-8">
         <motion.a
           href="mailto:mt@thestudio.mt"
