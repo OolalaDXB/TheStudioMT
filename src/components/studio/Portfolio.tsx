@@ -13,6 +13,9 @@ import lesvieillespierresImg from '@/assets/portfolio/lesvieillespierres.png';
 import livegreatImg from '@/assets/portfolio/livegreat.png';
 import sillonImg from '@/assets/portfolio/sillon.png';
 
+// Placeholder for ventures without images yet
+const placeholderImg = '/placeholder.svg';
+
 interface Venture {
   name: string;
   description: string;
@@ -21,6 +24,7 @@ interface Venture {
   image: string;
   splitImages?: { left: string; right: string };
   url?: string;
+  secondaryUrl?: string;
 }
 
 interface Category {
@@ -35,11 +39,45 @@ const categories: Category[] = [
       {
         name: 'BEAU',
         description: 'Wealth structuring infrastructure for multi-jurisdictional families.',
-        execution: 'Product strategy · Data architecture · UX · Pricing',
-        detail: 'Product strategy for expat families with assets across 4+ countries. Data architecture for multi-currency portfolios, liabilities, documents. UX for dashboard, access gateway, advisor sharing. Pricing model and go-to-market. Private beta.',
+        execution: 'Product strategy · Data architecture · UX · Zero Access encryption',
+        detail: 'Wealth structuring platform for expat families with assets across 4+ jurisdictions. Zero Access encryption architecture — only the user can decrypt their data. Dashboard for multi-currency portfolios, liabilities, estate documents. Access gateway for advisors and family members with granular permissions. Features: Dead Man Switch, Islamic/Faraid estate planning support. Premium pricing: €1,500–€4,000/year. Private beta.',
         image: beauImg,
         splitImages: { left: beauGatewayImg, right: beauImg },
         url: 'https://beau.capital',
+        secondaryUrl: 'https://app.beau.capital',
+      },
+      {
+        name: 'BEAU Treasury',
+        description: 'AI-powered treasury management system. Post-SWIFT play.',
+        execution: 'Market analysis · Product architecture · ISO 20022 expertise',
+        detail: 'Treasury management platform targeting the $2B+ TMS market during the ISO 20022 migration wave. Leverages 16+ years of SWIFT and banking infrastructure expertise across 83 countries. AI-powered cash forecasting, cross-border payment orchestration, and compliance automation. Strategic synergy with KM OpenPay for payment rails. Designed for mid-market corporates underserved by Kyriba and ION. Development starts post-SWIFT exit (Q3 2027). Potentially the largest play in the portfolio.',
+        image: placeholderImg,
+      },
+    ],
+  },
+  {
+    title: 'AI Infrastructure',
+    ventures: [
+      {
+        name: 'Bawaba',
+        description: 'Sovereign AI control plane for regulated industries. MCP reverse proxy.',
+        execution: 'Architecture · Go + Rust backend · PII tokenizer · CISO dashboard',
+        detail: 'MCP (Model Context Protocol) reverse proxy that enforces authentication, authorization, PII tokenization, sovereign data routing, and cryptographic audit trails for AI agents in regulated financial institutions. 8-stage fail-closed pipeline: Parse → Auth → Rate Limit → Policy → PII Tokenize → Sovereign Route → Execute → Audit. Backend in Go (2,650 LOC) + Rust PII tokenizer (355 LOC) with 7 MENA-specific PII regex patterns (IBAN, Morocco CIN, KSA NID/Iqama, UAE Emirates ID, Luhn credit card). Ed25519-signed hash-chain audit trail. Jurisdiction-based routing: Morocco (Inwi DC Casa), Saudi (STC Cloud Riyadh), UAE (G42 Abu Dhabi), EU (Hetzner Frankfurt). Docker-ready. 26 tests passing. Phase 1 complete.',
+        image: placeholderImg,
+        url: 'https://github.com/OolalaDXB/bawaba-command',
+      },
+    ],
+  },
+  {
+    title: 'Digital Identity',
+    ventures: [
+      {
+        name: 'MyOolala',
+        description: 'Multi-view digital passport. One identity, many faces.',
+        execution: 'Product design · Per-view architecture · Wallet integration · Stripe',
+        detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
+        image: placeholderImg,
+        url: 'https://myoolala.com',
       },
     ],
   },
@@ -58,7 +96,7 @@ const categories: Category[] = [
         name: 'PandaMood',
         description: 'Quiet-luxury padel equipment brand. Limited editions only.',
         execution: 'Brand identity · Product design · Supply chain · E-commerce',
-        detail: 'Brand from zero — name, positioning, visual identity. First racket line (ALPHA series) with manufacturing partner. Full supply chain from sourcing to fulfillment. E-commerce with reservation system. First drop: 50 units, Feb 2026.',
+        detail: 'Brand from zero — name, positioning, visual identity. First racket line (ALPHA series) with manufacturing partner. Full supply chain from sourcing to fulfillment. E-commerce with reservation system. First drop: 50 units, targeted Q3 2026. Currently in sampling phase with manufacturing partner.',
         image: pandamoodImg,
         url: 'https://pandamood.com',
       },
@@ -79,7 +117,7 @@ const categories: Category[] = [
         name: 'Maisons.co',
         description: 'Character homes & place-based hospitality. With Darya.',
         execution: 'Brand framework · Guest systems · Property ops',
-        detail: 'Two properties live: Maison Atlantique (Finistère) and Maison Georgia (Gudauri). Brand framework, booking flow, multilingual guest experience (EN/FR/AR/RU). Operational playbook for remote management. Portugal (Cascais) 2027.',
+        detail: 'Three properties: Maison Atlantique (Morbihan, Brittany), Maison Georgia (Gudauri ski resort), and a pied-à-terre in La Garenne-Colombes near Paris. Brand framework, direct booking, multilingual guest onboarding (EN/FR/AR/RU). Operational playbook for remote management from Dubai. Next: Cascais, Portugal (2027).',
         image: maisonsImg,
         url: 'https://maisons.co',
       },
@@ -113,11 +151,12 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Sillon',
-        description: 'Custom ERP for independent record labels.',
-        execution: 'Domain modeling · Full-stack build · Database architecture',
-        detail: 'Custom ERP for Outre-National Records (vinyl label). Domain modeling: catalog, inventory, suppliers, orders, analytics. Full-stack: React, Node, PostgreSQL. Multi-format inventory (LP, CD, digital) with location tracking. Modular, replicable. Proof of capability.',
+        description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
+        execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
+        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
         image: sillonImg,
-        url: 'https://outrenational-erp.vercel.app',
+        splitImages: { left: sillonImg, right: placeholderImg },
+        url: 'https://sillon.app',
       },
     ],
   },
