@@ -8,16 +8,20 @@ interface Capability {
 
 const capabilities: Capability[] = [
   {
+    title: 'Strategy & Business Development',
+    items: ['Go-to-market strategy', 'Partnership & distribution design', 'Investor materials & fundraising', 'Competitive intelligence', 'Multi-country market entry'],
+  },
+  {
     title: 'Product & Design',
     items: ['Product strategy & roadmap', 'UX/UI systems', 'Brand architecture', 'Multi-language experiences', 'Design systems'],
   },
   {
     title: 'Finance & Structuring',
-    items: ['Financial modeling', 'Multi-jurisdiction structures', 'Investor materials', 'Pricing & unit economics', 'Estate & wealth architecture'],
+    items: ['Financial modeling', 'Multi-jurisdiction structures', 'Pricing & unit economics', 'Estate & wealth architecture', 'Treasury & cash management'],
   },
   {
     title: 'Technology',
-    items: ['Full-stack development (React/Node/Go/Rust)', 'Database & API architecture', 'MCP protocol & AI infrastructure', 'Encryption & security architecture', 'AI-augmented development'],
+    items: ['Full-stack (React/Node/Go/Rust)', 'Database & API architecture', 'MCP protocol & AI infrastructure', 'Encryption & security', 'AI-augmented development'],
   },
   {
     title: 'Operations & Growth',
@@ -93,7 +97,7 @@ export function Capabilities() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-6"
         >
           {capabilities.map((capability, index) => (
             <motion.div

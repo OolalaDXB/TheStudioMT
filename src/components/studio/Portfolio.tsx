@@ -45,29 +45,6 @@ interface Category {
 
 const categories: Category[] = [
   {
-    title: 'Wealth Infrastructure',
-    ventures: [
-      {
-        name: 'BEAU',
-        description: 'Wealth structuring infrastructure for multi-jurisdictional families.',
-        execution: 'Product strategy · Data architecture · UX · Zero Access encryption',
-        detail: 'Wealth structuring platform for expat families with assets across 4+ jurisdictions. Zero Access encryption architecture — only the user can decrypt their data. Dashboard for multi-currency portfolios, liabilities, estate documents. Access gateway for advisors and family members with granular permissions. Features: Dead Man Switch, Islamic/Faraid estate planning support. Premium pricing: €1,500–€4,000/year. Private beta.',
-        image: beauImg,
-        splitImages: { left: beauGatewayImg, right: beauAppImg },
-        url: 'https://beau.capital',
-        secondaryUrl: 'https://beau-capital-dev.vercel.app',
-      },
-      {
-        name: 'BEAU Treasury',
-        description: 'AI-powered treasury management system. Post-SWIFT play.',
-        execution: 'Market analysis · Product architecture · ISO 20022 expertise',
-        detail: 'Treasury management platform targeting the $2B+ TMS market during the ISO 20022 migration wave. Leverages 16+ years of SWIFT and banking infrastructure expertise across 83 countries. AI-powered cash forecasting, cross-border payment orchestration, and compliance automation. Strategic synergy with KM OpenPay for payment rails. Designed for mid-market corporates underserved by Kyriba and ION. Development starts post-SWIFT exit (Q3 2027). Potentially the largest play in the portfolio.',
-        image: beauTreasuryImg,
-        imagePosition: 'object-top',
-      },
-    ],
-  },
-  {
     title: 'AI Infrastructure',
     ventures: [
       {
@@ -83,7 +60,44 @@ const categories: Category[] = [
     ],
   },
   {
-    title: 'Digital Identity',
+    title: 'Wealth Infrastructure',
+    ventures: [
+      {
+        name: 'BEAU',
+        description: 'Wealth structuring infrastructure for multi-jurisdictional families.',
+        execution: 'Product strategy · Data architecture · UX · Zero Access encryption',
+        detail: 'Wealth structuring platform for expat families with assets across 4+ jurisdictions. Zero Access encryption architecture — only the user can decrypt their data. Dashboard for multi-currency portfolios, liabilities, estate documents. Access gateway for advisors and family members with granular permissions. Features: Dead Man Switch, Islamic/Faraid estate planning support. Premium pricing: €1,500–€4,000/year. Private beta.',
+        image: beauImg,
+        splitImages: { left: beauGatewayImg, right: beauAppImg },
+        url: 'https://beau.capital',
+        secondaryUrl: 'https://beau-capital-dev.vercel.app',
+      },
+      {
+        name: 'BEAU Treasury',
+        description: 'Treasury intelligence for mid-market corporates. ISO 20022 native.',
+        execution: 'Product strategy · Domain expertise · Market positioning · Architecture',
+        detail: 'Treasury management platform built on 16 years of payments infrastructure experience across 83 countries. Targets the gap between spreadsheet-driven treasury and enterprise TMS (Kyriba, ION). Cash visibility, FX exposure, payment orchestration. ISO 20022 native — not retrofitted. Strategic synergy with KM OpenPay for execution rails.',
+        image: beauTreasuryImg,
+        imagePosition: 'object-top',
+      },
+    ],
+  },
+  {
+    title: 'Systems',
+    ventures: [
+      {
+        name: 'Sillon',
+        description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
+        execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
+        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
+        image: sillonImg,
+        splitImages: { left: sillonImg, right: placeholderImg },
+        url: 'https://sillon.app',
+      },
+    ],
+  },
+  {
+    title: 'Digital Identity & Hospitality',
     ventures: [
       {
         name: 'MyOolala',
@@ -94,6 +108,15 @@ const categories: Category[] = [
         splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
         splitPortrait: true,
         url: 'https://myoolala.com',
+      },
+      {
+        name: 'Maisons.co',
+        description: 'Property collection platform — booking, operations, and financial management.',
+        execution: 'Full-stack build · Multi-property ops · Revenue management · Guest systems',
+        detail: 'Full-stack hospitality platform built with Lovable + Supabase. 21K+ lines of code. Direct booking engine with dynamic pricing. Admin dashboard: calendar, bookings, guest management, contracts, financial ledger with multi-currency support (EUR/USD/AED/GEL), FX rates, payment tracking, and P&L per property. Multilingual guest onboarding (EN/FR/AR/RU). Three properties live: Maison Atlantique (Morbihan), Maison Georgia (Gudauri), La Garenne-Colombes (Paris). Next: Cascais 2027.',
+        image: maisonsHeroImg,
+        stackedImages: { hero: maisonsHeroImg, small: maisonsDashboardImg },
+        url: 'https://maisons.co',
       },
     ],
   },
@@ -127,17 +150,8 @@ const categories: Category[] = [
     ],
   },
   {
-    title: 'Place & Purpose',
+    title: 'Social Impact',
     ventures: [
-      {
-        name: 'Maisons.co',
-        description: 'Character homes & place-based hospitality. With Darya.',
-        execution: 'Brand framework · Guest systems · Property ops',
-        detail: 'Three properties: Maison Atlantique (Morbihan, Brittany), Maison Georgia (Gudauri ski resort), and a pied-à-terre in La Garenne-Colombes near Paris. Brand framework, direct booking, multilingual guest onboarding (EN/FR/AR/RU). Operational playbook for remote management from Dubai. Next: Cascais, Portugal (2027).',
-        image: maisonsHeroImg,
-        stackedImages: { hero: maisonsHeroImg, small: maisonsDashboardImg },
-        url: 'https://maisons.co',
-      },
       {
         name: 'Les Vieilles Pierres',
         description: 'Heritage hiking association in Brittany. Since 1974.',
@@ -160,20 +174,6 @@ const categories: Category[] = [
         detail: 'Sponsored via Oolala Social. Digital transformation for grassroots foundation in Kibera. Information architecture, website, copy. Programs: 5,000+ kg waste/month, 50+ climate champions, 200+ jobs, 300+ athletes fed.',
         image: livegreatImg,
         url: 'https://livegreatfoundation.netlify.app',
-      },
-    ],
-  },
-  {
-    title: 'Systems',
-    ventures: [
-      {
-        name: 'Sillon',
-        description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
-        execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
-        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
-        image: sillonImg,
-        splitImages: { left: sillonImg, right: placeholderImg },
-        url: 'https://sillon.app',
       },
     ],
   },
