@@ -4,6 +4,7 @@ import { VentureCard } from './VentureCard';
 
 // Import portfolio images
 import beauImg from '@/assets/portfolio/beau.png';
+import beauAppImg from '@/assets/portfolio/beau-app.png';
 import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
@@ -45,9 +46,9 @@ const categories: Category[] = [
         execution: 'Product strategy · Data architecture · UX · Zero Access encryption',
         detail: 'Wealth structuring platform for expat families with assets across 4+ jurisdictions. Zero Access encryption architecture — only the user can decrypt their data. Dashboard for multi-currency portfolios, liabilities, estate documents. Access gateway for advisors and family members with granular permissions. Features: Dead Man Switch, Islamic/Faraid estate planning support. Premium pricing: €1,500–€4,000/year. Private beta.',
         image: beauImg,
-        splitImages: { left: beauGatewayImg, right: beauImg },
+        splitImages: { left: beauGatewayImg, right: beauAppImg },
         url: 'https://beau.capital',
-        secondaryUrl: 'https://app.beau.capital',
+        secondaryUrl: 'https://beau-capital-dev.vercel.app',
       },
       {
         name: 'BEAU Treasury',
