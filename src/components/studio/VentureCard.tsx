@@ -8,10 +8,12 @@ interface VentureCardProps {
   execution: string;
   detail: string;
   image: string;
+  imagePosition?: string;
   splitImages?: { left: string; right: string };
   stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
+  badge?: string;
   index: number;
 }
 
@@ -20,11 +22,13 @@ export function VentureCard({
   description, 
   execution, 
   detail, 
-  image, 
+  image,
+  imagePosition = 'object-top-left',
   splitImages,
   stackedImages,
   url,
   secondaryUrl,
+  badge,
   index 
 }: VentureCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -141,12 +145,17 @@ export function VentureCard({
           )}
         </div>
       ) : (
-        <div className="h-[280px] overflow-hidden">
+        <div className="h-[280px] overflow-hidden relative">
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
+            className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", imagePosition)}
           />
+          {badge && (
+            <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
+              {badge}
+            </div>
+          )}
         </div>
       )}
 

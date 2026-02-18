@@ -28,10 +28,12 @@ interface Venture {
   execution: string;
   detail: string;
   image: string;
+  imagePosition?: string;
   splitImages?: { left: string; right: string };
   stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
+  badge?: string;
 }
 
 interface Category {
@@ -71,6 +73,8 @@ const categories: Category[] = [
         execution: 'Architecture · Go + Rust backend · PII tokenizer · CISO dashboard',
         detail: 'Security gateway between AI agents and enterprise systems. Enforces authentication, PII protection, sovereign data routing, and tamper-proof audit on every call. Built in Go and Rust for regulated financial institutions across MENA and EU. Open-source core.',
         image: bawabaImg,
+        imagePosition: 'object-top',
+        badge: 'Dossier sur demande',
         url: 'https://github.com/OolalaDXB/bawaba-command',
       },
     ],
