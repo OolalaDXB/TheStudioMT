@@ -73,7 +73,7 @@ const categories: Category[] = [
         execution: 'Architecture · Go + Rust backend · PII tokenizer · CISO dashboard',
         detail: 'Security gateway between AI agents and enterprise systems. Enforces authentication, PII protection, sovereign data routing, and tamper-proof audit on every call. Built in Go and Rust for regulated financial institutions across MENA and EU. Open-source core.',
         image: bawabaImg,
-        imagePosition: 'object-top',
+        imagePosition: 'object-contain',
         badge: 'Dossier sur demande',
         url: 'https://github.com/OolalaDXB/bawaba-command',
       },
