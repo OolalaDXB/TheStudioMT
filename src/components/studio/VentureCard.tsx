@@ -147,7 +147,7 @@ export function VentureCard({
           )}
         </div>
       ) : (
-        <div className="h-[340px] overflow-hidden relative">
+        <div className="h-[280px] overflow-hidden relative">
           <img
             src={image}
             alt={name}
