@@ -13,6 +13,7 @@ import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
 import maisonsImg from '@/assets/portfolio/maisons.png';
+import beauTreasuryImg from '@/assets/portfolio/beau-treasury.png';
 import maisonsHeroImg from '@/assets/portfolio/maisons-hero.png';
 import maisonsDashboardImg from '@/assets/portfolio/maisons-dashboard.png';
 import lesvieillespierresImg from '@/assets/portfolio/lesvieillespierres.png';
@@ -61,7 +62,8 @@ const categories: Category[] = [
         description: 'AI-powered treasury management system. Post-SWIFT play.',
         execution: 'Market analysis · Product architecture · ISO 20022 expertise',
         detail: 'Treasury management platform targeting the $2B+ TMS market during the ISO 20022 migration wave. Leverages 16+ years of SWIFT and banking infrastructure expertise across 83 countries. AI-powered cash forecasting, cross-border payment orchestration, and compliance automation. Strategic synergy with KM OpenPay for payment rails. Designed for mid-market corporates underserved by Kyriba and ION. Development starts post-SWIFT exit (Q3 2027). Potentially the largest play in the portfolio.',
-        image: placeholderImg,
+        image: beauTreasuryImg,
+        imagePosition: 'object-top',
       },
     ],
   },
