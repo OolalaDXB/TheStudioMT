@@ -10,6 +10,7 @@ interface VentureCardProps {
   image: string;
   imagePosition?: string;
   splitImages?: { left: string; right: string };
+  splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
@@ -25,6 +26,7 @@ export function VentureCard({
   image,
   imagePosition = 'object-top-left',
   splitImages,
+  splitPortrait = false,
   stackedImages,
   url,
   secondaryUrl,
@@ -88,7 +90,7 @@ export function VentureCard({
         </div>
       ) : splitImages ? (
         <div className="flex flex-col overflow-hidden">
-          <div className="flex h-[280px] overflow-hidden">
+          <div className={cn("flex overflow-hidden", splitPortrait ? "h-[420px]" : "h-[280px]")}>
             {url ? (
               <a
                 href={url}
@@ -100,14 +102,14 @@ export function VentureCard({
                 <img
                   src={splitImages.left}
                   alt={`${name} left`}
-                  className="w-full h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+                  className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-center")}
                 />
               </a>
             ) : (
               <img
                 src={splitImages.left}
                 alt={`${name} left`}
-                className="w-1/2 h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+                className={cn("w-1/2 h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-center")}
               />
             )}
             {secondaryUrl ? (
@@ -121,14 +123,14 @@ export function VentureCard({
                 <img
                   src={splitImages.right}
                   alt={`${name} right`}
-                  className="w-full h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
+                  className={cn("w-full h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-top-left")}
                 />
               </a>
             ) : (
               <img
                 src={splitImages.right}
                 alt={`${name} right`}
-                className="w-1/2 h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
+                className={cn("w-1/2 h-full object-cover transition-transform duration-400 group-hover:scale-[1.02]", splitPortrait ? "object-top" : "object-top-left")}
               />
             )}
           </div>

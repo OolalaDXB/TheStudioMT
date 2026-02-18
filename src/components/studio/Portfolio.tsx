@@ -30,6 +30,7 @@ interface Venture {
   image: string;
   imagePosition?: string;
   splitImages?: { left: string; right: string };
+  splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
@@ -89,6 +90,7 @@ const categories: Category[] = [
         detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
         image: myoolalaLandingImg,
         splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
+        splitPortrait: true,
         url: 'https://myoolala.com',
       },
     ],
