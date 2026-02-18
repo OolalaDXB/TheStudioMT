@@ -9,6 +9,7 @@ interface VentureCardProps {
   detail: string;
   image: string;
   splitImages?: { left: string; right: string };
+  stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
   index: number;
@@ -20,7 +21,8 @@ export function VentureCard({
   execution, 
   detail, 
   image, 
-  splitImages, 
+  splitImages,
+  stackedImages,
   url,
   secondaryUrl,
   index 
@@ -60,8 +62,27 @@ export function VentureCard({
         'hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(26,58,58,0.1)]'
       )}
     >
-      {/* Image */}
-      {splitImages ? (
+      {/* Image area */}
+      {stackedImages ? (
+        <div className="overflow-hidden">
+          {/* Hero image — large */}
+          <div className="h-[240px] overflow-hidden">
+            <img
+              src={stackedImages.hero}
+              alt={`${name} hero`}
+              className="w-full h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+            />
+          </div>
+          {/* Small image — dashboard/secondary */}
+          <div className="h-[120px] overflow-hidden border-t border-border">
+            <img
+              src={stackedImages.small}
+              alt={`${name} dashboard`}
+              className="w-full h-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.02]"
+            />
+          </div>
+        </div>
+      ) : splitImages ? (
         <div className="flex flex-col overflow-hidden">
           <div className="flex h-[280px] overflow-hidden">
             {url ? (
