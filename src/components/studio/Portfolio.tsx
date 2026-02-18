@@ -69,7 +69,7 @@ const categories: Category[] = [
         name: 'Bawaba',
         description: 'Sovereign AI control plane for regulated industries. MCP reverse proxy.',
         execution: 'Architecture · Go + Rust backend · PII tokenizer · CISO dashboard',
-        detail: 'MCP (Model Context Protocol) reverse proxy that enforces authentication, authorization, PII tokenization, sovereign data routing, and cryptographic audit trails for AI agents in regulated financial institutions. 8-stage fail-closed pipeline: Parse → Auth → Rate Limit → Policy → PII Tokenize → Sovereign Route → Execute → Audit. Backend in Go (2,650 LOC) + Rust PII tokenizer (355 LOC) with 7 MENA-specific PII regex patterns (IBAN, Morocco CIN, KSA NID/Iqama, UAE Emirates ID, Luhn credit card). Ed25519-signed hash-chain audit trail. Jurisdiction-based routing: Morocco (Inwi DC Casa), Saudi (STC Cloud Riyadh), UAE (G42 Abu Dhabi), EU (Hetzner Frankfurt). Docker-ready. 26 tests passing. Phase 1 complete.',
+        detail: 'Security gateway between AI agents and enterprise systems. Enforces authentication, PII protection, sovereign data routing, and tamper-proof audit on every call. Built in Go and Rust for regulated financial institutions across MENA and EU. Open-source core.',
         image: bawabaImg,
         url: 'https://github.com/OolalaDXB/bawaba-command',
       },
