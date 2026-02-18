@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -71,83 +71,42 @@ export function VentureCard({
       {/* Image area */}
       {stackedImages ? (
         <div className="overflow-hidden">
-          <div className="h-[240px] overflow-hidden relative group/img">
-            <img
-              src={stackedImages.hero}
-              alt={`${name} hero`}
-              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
-            />
-            <AnimatePresence>
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                className="absolute inset-0 bg-primary/20 pointer-events-none"
-              />
-            </AnimatePresence>
+          <div className="h-[240px] overflow-hidden">
+            {url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer" className="split-image-link block w-full h-full" onClick={(e) => e.stopPropagation()}>
+                <img src={stackedImages.hero} alt={`${name} hero`} className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]" />
+              </a>
+            ) : (
+              <img src={stackedImages.hero} alt={`${name} hero`} className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]" />
+            )}
           </div>
-          <div className="h-[120px] overflow-hidden border-t border-border relative">
-            <img
-              src={stackedImages.small}
-              alt={`${name} dashboard`}
-              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
-            />
+          <div className="h-[120px] overflow-hidden border-t border-border">
+            <img src={stackedImages.small} alt={`${name} dashboard`} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]" />
           </div>
         </div>
       ) : splitImages ? (
         <div className="flex flex-col overflow-hidden">
           <div className={cn("flex overflow-hidden", splitPortrait ? "h-[420px]" : "h-[280px]")}>
             {/* Left split image */}
-            <a
-              href={url || undefined}
-              target={url ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className={cn("split-image-link relative overflow-hidden", url ? "cursor-pointer" : "cursor-default pointer-events-none", "w-1/2")}
-              onClick={(e) => { e.stopPropagation(); if (!url) e.preventDefault(); }}
-            >
-              <img
-                src={splitImages.left}
-                alt={`${name} left`}
-                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-center")}
-              />
-              {url && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.25 }}
-                  className="absolute inset-0 bg-primary/25 flex items-center justify-center"
-                >
-                  <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
-                    Ouvrir ↗
-                  </span>
-                </motion.div>
-              )}
-            </a>
+            {url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer" className="split-image-link w-1/2 overflow-hidden block" onClick={(e) => e.stopPropagation()}>
+                <img src={splitImages.left} alt={`${name} left`} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-center")} />
+              </a>
+            ) : (
+              <div className="w-1/2 overflow-hidden">
+                <img src={splitImages.left} alt={`${name} left`} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-center")} />
+              </div>
+            )}
             {/* Right split image */}
-            <a
-              href={secondaryUrl || url || undefined}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn("split-image-link relative overflow-hidden border-l border-border/50", (secondaryUrl || url) ? "cursor-pointer" : "cursor-default pointer-events-none", "w-1/2")}
-              onClick={(e) => { e.stopPropagation(); if (!secondaryUrl && !url) e.preventDefault(); }}
-            >
-              <img
-                src={splitImages.right}
-                alt={`${name} right`}
-                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-top-left")}
-              />
-              {(secondaryUrl || url) && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.25 }}
-                  className="absolute inset-0 bg-primary/25 flex items-center justify-center"
-                >
-                  <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
-                    {secondaryUrl ? 'App Demo ↗' : 'Ouvrir ↗'}
-                  </span>
-                </motion.div>
-              )}
-            </a>
+            {(secondaryUrl || url) ? (
+              <a href={secondaryUrl || url} target="_blank" rel="noopener noreferrer" className="split-image-link w-1/2 overflow-hidden block border-l border-border/50" onClick={(e) => e.stopPropagation()}>
+                <img src={splitImages.right} alt={`${name} right`} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-top-left")} />
+              </a>
+            ) : (
+              <div className="w-1/2 overflow-hidden border-l border-border/50">
+                <img src={splitImages.right} alt={`${name} right`} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", splitPortrait ? "object-top" : "object-top-left")} />
+              </div>
+            )}
           </div>
           {/* Labels */}
           {(url || secondaryUrl) && (
@@ -164,35 +123,11 @@ export function VentureCard({
       ) : (
         <div className="h-[280px] overflow-hidden relative">
           {url ? (
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="split-image-link block w-full h-full relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={image}
-                alt={name}
-                className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)}
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.25 }}
-                className="absolute inset-0 bg-primary/25 flex items-center justify-center"
-              >
-                <span className="text-primary-foreground font-body text-xs tracking-[0.12em] uppercase bg-primary/80 px-3 py-1.5 rounded">
-                  Ouvrir ↗
-                </span>
-              </motion.div>
+            <a href={url} target="_blank" rel="noopener noreferrer" className="split-image-link block w-full h-full" onClick={(e) => e.stopPropagation()}>
+              <img src={image} alt={name} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)} />
             </a>
           ) : (
-            <img
-              src={image}
-              alt={name}
-              className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)}
-            />
+            <img src={image} alt={name} className={cn("w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]", imagePosition)} />
           )}
           {badge && (
             <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
@@ -207,9 +142,28 @@ export function VentureCard({
         <h3 className="font-display text-[1.875rem] font-normal text-primary mb-2 flex items-center gap-2">
           {name}
           {url && (
-            <span className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 cursor-pointer hover:text-warm">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
+              onClick={(e) => e.stopPropagation()}
+              title="Ouvrir le site"
+            >
               ↗
-            </span>
+            </a>
+          )}
+          {secondaryUrl && (
+            <a
+              href={secondaryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
+              onClick={(e) => e.stopPropagation()}
+              title="Ouvrir la démo"
+            >
+              ↗
+            </a>
           )}
           <span className="ml-auto font-body text-xl font-light text-warm-muted transition-transform duration-300" style={{ transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)' }}>
             +
