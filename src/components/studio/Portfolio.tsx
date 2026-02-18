@@ -9,7 +9,7 @@ import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
 import maisonsImg from '@/assets/portfolio/maisons.png';
-import maisonsLandingImg from '@/assets/portfolio/maisons-landing.png';
+import maisonsHeroImg from '@/assets/portfolio/maisons-hero.png';
 import maisonsDashboardImg from '@/assets/portfolio/maisons-dashboard.png';
 import lesvieillespierresImg from '@/assets/portfolio/lesvieillespierres.png';
 import livegreatImg from '@/assets/portfolio/livegreat.png';
@@ -25,6 +25,7 @@ interface Venture {
   detail: string;
   image: string;
   splitImages?: { left: string; right: string };
+  stackedImages?: { hero: string; small: string };
   url?: string;
   secondaryUrl?: string;
 }
@@ -120,8 +121,8 @@ const categories: Category[] = [
         description: 'Character homes & place-based hospitality. With Darya.',
         execution: 'Brand framework · Guest systems · Property ops',
         detail: 'Three properties: Maison Atlantique (Morbihan, Brittany), Maison Georgia (Gudauri ski resort), and a pied-à-terre in La Garenne-Colombes near Paris. Brand framework, direct booking, multilingual guest onboarding (EN/FR/AR/RU). Operational playbook for remote management from Dubai. Next: Cascais, Portugal (2027).',
-        image: maisonsLandingImg,
-        splitImages: { left: maisonsLandingImg, right: maisonsDashboardImg },
+        image: maisonsHeroImg,
+        stackedImages: { hero: maisonsHeroImg, small: maisonsDashboardImg },
         url: 'https://maisons.co',
       },
       {
