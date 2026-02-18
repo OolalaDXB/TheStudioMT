@@ -7,6 +7,8 @@ import beauImg from '@/assets/portfolio/beau.png';
 import beauAppImg from '@/assets/portfolio/beau-app.png';
 import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
 import bawabaImg from '@/assets/portfolio/bawaba.png';
+import myoolalaLandingImg from '@/assets/portfolio/myoolala-landing.png';
+import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
@@ -81,7 +83,8 @@ const categories: Category[] = [
         description: 'Multi-view digital passport. One identity, many faces.',
         execution: 'Product design · Per-view architecture · Wallet integration · Stripe',
         detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
-        image: placeholderImg,
+        image: myoolalaLandingImg,
+        splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
         url: 'https://myoolala.com',
       },
     ],
