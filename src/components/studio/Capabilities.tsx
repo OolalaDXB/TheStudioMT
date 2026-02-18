@@ -9,19 +9,19 @@ interface Capability {
 const capabilities: Capability[] = [
   {
     title: 'Product & Design',
-    items: ['Product strategy', 'UX/UI systems', 'Brand architecture', 'Information structure', 'Design systems'],
+    items: ['Product strategy & roadmap', 'UX/UI systems', 'Brand architecture', 'Multi-language experiences', 'Design systems'],
   },
   {
-    title: 'Finance & Operations',
-    items: ['Financial modeling', 'Unit economics', 'Investor materials', 'Business architecture', 'Pricing systems'],
+    title: 'Finance & Structuring',
+    items: ['Financial modeling', 'Multi-jurisdiction structures', 'Investor materials', 'Pricing & unit economics', 'Estate & wealth architecture'],
   },
   {
     title: 'Technology',
-    items: ['System implementation (full-stack)', 'Database architecture', 'Interfaces & integrations', 'E-commerce systems', 'Operational tooling'],
+    items: ['Full-stack development (React/Node/Go/Rust)', 'Database & API architecture', 'MCP protocol & AI infrastructure', 'Encryption & security architecture', 'AI-augmented development'],
   },
   {
-    title: 'International BD',
-    items: ['Multi-jurisdiction structures', 'Business development', 'Cross-border operations', 'Ecosystem design', 'Commercial strategy'],
+    title: 'Operations & Growth',
+    items: ['Remote operations playbooks', 'Cross-border business development', 'Franchise & replication models', 'Regulatory compliance (MENA/EU)', 'Emerging market entry'],
   },
 ];
 

@@ -18,7 +18,7 @@ export function Footer() {
                 The Studio MT
               </div>
               <div className="text-sm text-muted-foreground mt-1">
-                Independent venture studio
+                Independent venture studio · © 2026
               </div>
             </div>
             
@@ -43,7 +43,7 @@ export function Footer() {
           
           {/* Bottom */}
           <div className="text-xs text-muted-foreground tracking-[0.15em] text-center">
-            Dubai · Paris · Brittany · Tbilisi
+            Dubai · Paris · Brittany · Tbilisi · Gaborone
           </div>
         </motion.div>
       </div>

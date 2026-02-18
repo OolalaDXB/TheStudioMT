@@ -10,6 +10,7 @@ interface VentureCardProps {
   image: string;
   splitImages?: { left: string; right: string };
   url?: string;
+  secondaryUrl?: string;
   index: number;
 }
 
@@ -20,7 +21,8 @@ export function VentureCard({
   detail, 
   image, 
   splitImages, 
-  url, 
+  url,
+  secondaryUrl,
   index 
 }: VentureCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -30,6 +32,11 @@ export function VentureCard({
     if ((e.target as HTMLElement).closest('.arrow-link')) {
       e.stopPropagation();
       if (url) window.open(url, '_blank');
+      return;
+    }
+    // If clicking a split image link, don't toggle
+    if ((e.target as HTMLElement).closest('.split-image-link')) {
+      e.stopPropagation();
       return;
     }
     // Otherwise toggle expand
@@ -55,17 +62,62 @@ export function VentureCard({
     >
       {/* Image */}
       {splitImages ? (
-        <div className="flex h-[280px] overflow-hidden">
-          <img
-            src={splitImages.left}
-            alt={`${name} left`}
-            className="w-1/2 h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
-          />
-          <img
-            src={splitImages.right}
-            alt={`${name} right`}
-            className="w-1/2 h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
-          />
+        <div className="flex flex-col overflow-hidden">
+          <div className="flex h-[280px] overflow-hidden">
+            {url ? (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="split-image-link w-1/2 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={splitImages.left}
+                  alt={`${name} left`}
+                  className="w-full h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+                />
+              </a>
+            ) : (
+              <img
+                src={splitImages.left}
+                alt={`${name} left`}
+                className="w-1/2 h-full object-cover object-center transition-transform duration-400 group-hover:scale-[1.02]"
+              />
+            )}
+            {secondaryUrl ? (
+              <a
+                href={secondaryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="split-image-link w-1/2 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={splitImages.right}
+                  alt={`${name} right`}
+                  className="w-full h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
+                />
+              </a>
+            ) : (
+              <img
+                src={splitImages.right}
+                alt={`${name} right`}
+                className="w-1/2 h-full object-cover object-top-left transition-transform duration-400 group-hover:scale-[1.02]"
+              />
+            )}
+          </div>
+          {/* Labels for split images when there are dual links */}
+          {(url || secondaryUrl) && (
+            <div className="flex border-t border-border">
+              <div className="w-1/2 px-4 py-1.5 text-xs text-muted-foreground text-center border-r border-border">
+                Landing Page
+              </div>
+              <div className="w-1/2 px-4 py-1.5 text-xs text-muted-foreground text-center">
+                App Demo
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="h-[280px] overflow-hidden">
