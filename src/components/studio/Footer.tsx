@@ -33,10 +33,10 @@ export function Footer() {
                 LinkedIn ↗
               </a>
               <a 
-                href="mailto:mt@thestudio.mt"
+                href="mailto:mickael@thestudio.mt"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                mt@thestudio.mt
+                mickael@thestudio.mt
               </a>
             </div>
           </div>
