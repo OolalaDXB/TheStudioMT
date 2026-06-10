@@ -35,6 +35,7 @@ interface Venture {
   image: string;
   imagePosition?: string;
   splitImages?: { left: string; right: string };
+  gallery?: string[];
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
