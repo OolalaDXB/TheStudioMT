@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface VentureCardProps {
@@ -12,13 +12,46 @@ interface VentureCardProps {
   splitImages?: { left: string; right: string };
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
+  gallery?: string[];
   url?: string;
   secondaryUrl?: string;
   badge?: string;
   index: number;
 }
 
-function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+function Lightbox({
+  images,
+  startIndex,
+  alt,
+  onClose,
+}: {
+  images: string[];
+  startIndex: number;
+  alt: string;
+  onClose: () => void;
+}) {
+  const [idx, setIdx] = useState(startIndex);
+  const hasMany = images.length > 1;
+
+  const next = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIdx((i) => (i + 1) % images.length);
+  };
+  const prev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight' && hasMany) setIdx((i) => (i + 1) % images.length);
+      if (e.key === 'ArrowLeft' && hasMany) setIdx((i) => (i - 1 + images.length) % images.length);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [images.length, hasMany, onClose]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -29,16 +62,55 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
         className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm cursor-zoom-out p-4 md:p-10"
         onClick={onClose}
       >
-        <motion.img
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          src={src}
-          alt={alt}
-          className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default"
-          onClick={(e) => e.stopPropagation()}
-        />
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={idx}
+            initial={{ scale: 0.94, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.94, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            src={images[idx]}
+            alt={alt}
+            className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </AnimatePresence>
+
+        {hasMany && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
+              aria-label="Précédent"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
+              aria-label="Suivant"
+            >
+              ›
+            </button>
+            <div
+              className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  className={cn(
+                    'h-1.5 rounded-full transition-all',
+                    i === idx ? 'w-8 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/60'
+                  )}
+                  aria-label={`Image ${i + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-white/70 hover:text-white text-3xl leading-none font-light transition-colors"
@@ -51,27 +123,28 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
   );
 }
 
-export function VentureCard({ 
-  name, 
-  description, 
-  execution, 
-  detail, 
+export function VentureCard({
+  name,
+  description,
+  execution,
+  detail,
   image,
   imagePosition = 'object-top-left',
   splitImages,
   splitPortrait = false,
   stackedImages,
+  gallery,
   url,
   secondaryUrl,
   badge,
-  index 
+  index,
 }: VentureCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{ images: string[]; start: number } | null>(null);
 
-  const openLightbox = (src: string, e: React.MouseEvent) => {
+  const openLightbox = (images: string[], start: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    setLightboxSrc(src);
+    setLightbox({ images, start });
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -80,7 +153,7 @@ export function VentureCard({
       return;
     }
     if ((e.target as HTMLElement).closest('.image-trigger')) {
-      return; // handled by openLightbox
+      return;
     }
     setIsExpanded(!isExpanded);
   };
@@ -90,11 +163,12 @@ export function VentureCard({
 
   return (
     <>
-      {lightboxSrc && (
+      {lightbox && (
         <Lightbox
-          src={lightboxSrc}
+          images={lightbox.images}
+          startIndex={lightbox.start}
           alt={name}
-          onClose={() => setLightboxSrc(null)}
+          onClose={() => setLightbox(null)}
         />
       )}
 
@@ -119,23 +193,22 @@ export function VentureCard({
           <div className="overflow-hidden">
             <div
               className="h-[240px] overflow-hidden image-trigger cursor-zoom-in"
-              onClick={(e) => openLightbox(stackedImages.hero, e)}
+              onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 0, e)}
             >
               <img src={stackedImages.hero} alt={`${name} hero`} className={imgClass('object-center')} />
             </div>
             <div
               className="h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
-              onClick={(e) => openLightbox(stackedImages.small, e)}
+              onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 1, e)}
             >
               <img src={stackedImages.small} alt={`${name} dashboard`} className={imgClass('object-top')} />
             </div>
           </div>
         ) : splitImages ? (
           <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[420px]' : 'h-[280px]')}>
-            {/* Left split image */}
             <div
               className="w-1/2 overflow-hidden image-trigger cursor-zoom-in"
-              onClick={(e) => openLightbox(splitImages.left, e)}
+              onClick={(e) => openLightbox([splitImages.left, splitImages.right], 0, e)}
             >
               <img
                 src={splitImages.left}
@@ -143,10 +216,9 @@ export function VentureCard({
                 className={imgClass(splitPortrait ? 'object-top' : 'object-center')}
               />
             </div>
-            {/* Right split image */}
             <div
               className="w-1/2 overflow-hidden border-l border-border/50 image-trigger cursor-zoom-in"
-              onClick={(e) => openLightbox(splitImages.right, e)}
+              onClick={(e) => openLightbox([splitImages.left, splitImages.right], 1, e)}
             >
               <img
                 src={splitImages.right}
@@ -158,9 +230,14 @@ export function VentureCard({
         ) : (
           <div
             className="h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
-            onClick={(e) => openLightbox(image, e)}
+            onClick={(e) => openLightbox(gallery && gallery.length > 0 ? gallery : [image], 0, e)}
           >
             <img src={image} alt={name} className={imgClass(imagePosition)} />
+            {gallery && gallery.length > 1 && (
+              <div className="absolute top-3 right-3 px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
+                +{gallery.length - 1}
+              </div>
+            )}
             {badge && (
               <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
                 {badge}
@@ -213,7 +290,6 @@ export function VentureCard({
             {execution}
           </p>
 
-          {/* Expandable detail */}
           <motion.div
             initial={false}
             animate={{
