@@ -223,20 +223,20 @@ export function VentureCard({
         {stackedImages ? (
           <div className="overflow-hidden">
             <div
-              className="h-[240px] overflow-hidden image-trigger cursor-zoom-in"
+              className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 0, e)}
             >
-              <img src={stackedImages.hero} alt={`${name} hero`} className={imgClass('object-center')} />
+              <img src={stackedImages.hero} alt={`${name} hero`} loading="lazy" decoding="async" className={imgClass('object-center')} />
             </div>
             <div
-              className="h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
+              className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 1, e)}
             >
-              <img src={stackedImages.small} alt={`${name} dashboard`} className={imgClass('object-top')} />
+              <img src={stackedImages.small} alt={`${name} dashboard`} loading="lazy" decoding="async" className={imgClass('object-top')} />
             </div>
           </div>
         ) : splitImages ? (
-          <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[420px]' : 'h-[280px]')}>
+          <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[320px] sm:h-[380px] md:h-[420px]' : 'h-[200px] sm:h-[240px] md:h-[280px]')}>
             <div
               className="w-1/2 overflow-hidden image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([splitImages.left, splitImages.right], 0, e)}
@@ -244,6 +244,8 @@ export function VentureCard({
               <img
                 src={splitImages.left}
                 alt={`${name} left`}
+                loading="lazy"
+                decoding="async"
                 className={imgClass(splitPortrait ? 'object-top' : 'object-center')}
               />
             </div>
@@ -254,16 +256,33 @@ export function VentureCard({
               <img
                 src={splitImages.right}
                 alt={`${name} right`}
+                loading="lazy"
+                decoding="async"
                 className={imgClass(splitPortrait ? 'object-top' : 'object-top-left')}
               />
             </div>
           </div>
         ) : (
           <div
-            className="h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
+            className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
             onClick={(e) => openLightbox(gallery && gallery.length > 0 ? gallery : [image], 0, e)}
+            onMouseEnter={() => {
+              // Discreetly preload remaining gallery images on hover
+              if (gallery && gallery.length > 1) {
+                gallery.slice(1).forEach((src) => {
+                  const i = new Image();
+                  i.src = src;
+                });
+              }
+            }}
           >
-            <img src={image} alt={name} className={imgClass(imagePosition)} />
+            <img
+              src={image}
+              alt={name}
+              loading="lazy"
+              decoding="async"
+              className={imgClass(imagePosition)}
+            />
             {gallery && gallery.length > 1 && (
               <div className="absolute top-3 right-3 px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
                 +{gallery.length - 1}
