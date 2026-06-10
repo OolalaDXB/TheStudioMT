@@ -161,8 +161,9 @@ const categories: Category[] = [
         description: 'Heritage hiking association in Brittany — public site and self-managed back-office.',
         execution: 'Full-stack build · Editorial site · Multi-role CMS · Embedded AI assistant',
         detail: 'Digital rebuild for a 50-year-old heritage hiking association in Quistinic, Morbihan. Since 1974. 130km of trails. Two layers in one build. Front: an editorial, responsive, accessible public site — trails, events, shop, gallery, contact. Back: a complete no-code admin space the volunteers run themselves, no developer needed. Supabase auth with whitelist access and role-based tabs (Messages, Orders, Content CMS, Contacts, Calendar, Statistics, Team, audit Journal). Per-page content editing, multi-photo upload with reordering, Resend email integration, Plausible analytics. The differentiator: "Souffleur IA", an embedded assistant with a plain-language user guide written for non-technical volunteers — they ask a question, it answers. Pro bono; my father is president.',
-        image: lesvieillespierresImg,
-        splitImages: { left: lesvieillespierresImg, right: lesvieillespierresAdminImg },
+        image: lesvieillespierresHeroImg,
+        imagePosition: 'object-center',
+        gallery: [lesvieillespierresHeroImg, lesvieillespierresSouffleurImg, lesvieillespierresAdminImg],
         url: 'https://lesvieillespierres.com',
       },
       {
