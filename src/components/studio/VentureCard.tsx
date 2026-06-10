@@ -52,6 +52,14 @@ function Lightbox({
     return () => window.removeEventListener('keydown', onKey);
   }, [images.length, hasMany, onClose]);
 
+  // Discreet preload of the next image
+  useEffect(() => {
+    if (!hasMany) return;
+    const nextSrc = images[(idx + 1) % images.length];
+    const img = new Image();
+    img.src = nextSrc;
+  }, [idx, images, hasMany]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -59,61 +67,84 @@ function Lightbox({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm cursor-zoom-out p-4 md:p-10"
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm cursor-zoom-out p-3 sm:p-6 md:p-10"
         onClick={onClose}
       >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={idx}
-            initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.94, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            src={images[idx]}
-            alt={alt}
-            className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </AnimatePresence>
-
-        {hasMany && (
-          <>
-            <button
-              onClick={prev}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
-              aria-label="Précédent"
-            >
-              ‹
-            </button>
-            <button
-              onClick={next}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
-              aria-label="Suivant"
-            >
-              ›
-            </button>
-            <div
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2"
+        <div
+          className={cn(
+            'relative flex-1 w-full flex items-center justify-center min-h-0',
+            hasMany ? 'pb-20 sm:pb-24' : ''
+          )}
+        >
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={idx}
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              src={images[idx]}
+              alt={alt}
+              decoding="async"
+              className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default select-none"
               onClick={(e) => e.stopPropagation()}
-            >
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIdx(i)}
-                  className={cn(
-                    'h-1.5 rounded-full transition-all',
-                    i === idx ? 'w-8 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/60'
-                  )}
-                  aria-label={`Image ${i + 1}`}
+            />
+          </AnimatePresence>
+
+          {hasMany && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute left-1 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
+                aria-label="Précédent"
+              >
+                ‹
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-1 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
+                aria-label="Suivant"
+              >
+                ›
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Thumbnails strip */}
+        {hasMany && (
+          <div
+            className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md border border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {images.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className={cn(
+                  'relative overflow-hidden rounded transition-all duration-300',
+                  'w-14 h-10 sm:w-20 sm:h-14',
+                  i === idx
+                    ? 'ring-2 ring-white scale-105 opacity-100'
+                    : 'opacity-50 hover:opacity-90 ring-1 ring-white/20'
+                )}
+                aria-label={`Image ${i + 1}`}
+              >
+                <img
+                  src={src}
+                  alt={`${alt} miniature ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
                 />
-              ))}
-            </div>
-          </>
+              </button>
+            ))}
+          </div>
         )}
 
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/70 hover:text-white text-3xl leading-none font-light transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/70 hover:text-white text-3xl leading-none font-light transition-colors w-10 h-10 flex items-center justify-center"
           aria-label="Fermer"
         >
           ×
@@ -192,20 +223,20 @@ export function VentureCard({
         {stackedImages ? (
           <div className="overflow-hidden">
             <div
-              className="h-[240px] overflow-hidden image-trigger cursor-zoom-in"
+              className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 0, e)}
             >
-              <img src={stackedImages.hero} alt={`${name} hero`} className={imgClass('object-center')} />
+              <img src={stackedImages.hero} alt={`${name} hero`} loading="lazy" decoding="async" className={imgClass('object-center')} />
             </div>
             <div
-              className="h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
+              className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 1, e)}
             >
-              <img src={stackedImages.small} alt={`${name} dashboard`} className={imgClass('object-top')} />
+              <img src={stackedImages.small} alt={`${name} dashboard`} loading="lazy" decoding="async" className={imgClass('object-top')} />
             </div>
           </div>
         ) : splitImages ? (
-          <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[420px]' : 'h-[280px]')}>
+          <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[320px] sm:h-[380px] md:h-[420px]' : 'h-[200px] sm:h-[240px] md:h-[280px]')}>
             <div
               className="w-1/2 overflow-hidden image-trigger cursor-zoom-in"
               onClick={(e) => openLightbox([splitImages.left, splitImages.right], 0, e)}
@@ -213,6 +244,8 @@ export function VentureCard({
               <img
                 src={splitImages.left}
                 alt={`${name} left`}
+                loading="lazy"
+                decoding="async"
                 className={imgClass(splitPortrait ? 'object-top' : 'object-center')}
               />
             </div>
@@ -223,16 +256,33 @@ export function VentureCard({
               <img
                 src={splitImages.right}
                 alt={`${name} right`}
+                loading="lazy"
+                decoding="async"
                 className={imgClass(splitPortrait ? 'object-top' : 'object-top-left')}
               />
             </div>
           </div>
         ) : (
           <div
-            className="h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
+            className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
             onClick={(e) => openLightbox(gallery && gallery.length > 0 ? gallery : [image], 0, e)}
+            onMouseEnter={() => {
+              // Discreetly preload remaining gallery images on hover
+              if (gallery && gallery.length > 1) {
+                gallery.slice(1).forEach((src) => {
+                  const i = new Image();
+                  i.src = src;
+                });
+              }
+            }}
           >
-            <img src={image} alt={name} className={imgClass(imagePosition)} />
+            <img
+              src={image}
+              alt={name}
+              loading="lazy"
+              decoding="async"
+              className={imgClass(imagePosition)}
+            />
             {gallery && gallery.length > 1 && (
               <div className="absolute top-3 right-3 px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-xs font-body font-medium text-muted-foreground border border-border">
                 +{gallery.length - 1}
