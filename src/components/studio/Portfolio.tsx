@@ -23,7 +23,6 @@ import lesvieillespierresSouffleurImg from '@/assets/portfolio/lesvieillespierre
 import livegreatImg from '@/assets/portfolio/livegreat.png';
 import sillonImg from '@/assets/portfolio/sillon.png';
 import sillonDashboardImg from '@/assets/portfolio/sillon-dashboard.png';
-import lesvieillespierresAdminImg from '@/assets/portfolio/lesvieillespierres-admin.png';
 
 // Placeholder for ventures without images yet
 const placeholderImg = '/placeholder.svg';
