@@ -1,8 +1,8 @@
 # Handoff — completing the portfolio cards
 
 For the next Claude Code session, which has access to **all** the product
-repositories. This one only had `OolalaDXB/TheStudioMT` plus a read clone of
-`OolalaDXB/bawaba-command`, and that limit is the whole reason this file exists.
+repositories. This one had only `OolalaDXB/TheStudioMT`, and that limit is the
+whole reason this file exists.
 
 Branch: `claude/sleepy-bardeen-4uwe0w`. Develop there, push there.
 
@@ -56,32 +56,32 @@ git show 153f853:src/components/studio/Portfolio.tsx
 That was the best source available without the product repos. **You have the
 product repos. Verify against source, and prefer source over prose.**
 
-Bawaba shows why this matters. Its card claimed an eight-stage pipeline of
-`parse → auth → rate limit → policy → tokenize → route → execute → audit`.
-The actual pipeline, in `internal/proxy/proxy.go`, is numbered `Step 1`..`Step 8`
-and reads `authenticate → rate limit → policy → tokenise → sovereign route →
-execute → de-tokenise → audit`. Parse is not a stage; **de-tokenise** is, and it
-had been dropped from the copy entirely. Reading the source both corrected the
-order and recovered a stage worth naming.
+Bawaba shows why this matters. Its card described an eight-stage pipeline in an
+order the source did not support, and omitted one stage entirely — the step that
+restores tokenised values on the response path. The card described personal data
+going in and never described it coming back. Reading the source corrected the
+order and recovered the missing stage. Prose drifts; source does not.
 
 ## 4. Per-card status
 
 | Card | Copy verified against source? | Where to look |
 |---|---|---|
-| Bawaba | **Yes** — `OolalaDXB/bawaba-command` | done; see §5 for what is still open |
-| Sillon | No | find the repo; card claims 135 tables, 221 db functions, 41 edge functions |
-| Maisons.co | No | card claims 76 tables, 125 db functions, 27 edge functions |
-| Coach Gari | No | card claims 47 tables, 330 db functions, 19 edge functions, 16 pgTAP suites |
+| Bawaba | **Yes**, against source | done — treat the project as closed source (§6) |
+| Sillon | No | `OolalaDXB/SILLON`; card claims 135 tables, 221 db functions, 41 edge functions |
+| Maisons.co | No | `OolalaDXB/maison-collection`; claims 76 tables, 125 db functions, 27 edge functions |
+| Coach Gari | No | `OolalaDXB/CoachGari`; claims 47 tables, 330 db functions, 19 edge functions, 16 pgTAP suites |
 | RLS Guard | No | `OolalaDXB/rls-guard`; four invariants + evidence report are checkable |
-| BEAU | No | Zero Access, Faraid shares, Dead Man Switch all unverified |
-| BEAU Treasury | n/a | in development — see the constraint in §6 |
-| MyOolala | No | per-view QR + Wallet pass, Stripe tipping/shop/donations |
-| Les Vieilles Pierres | No | admin tabs, Souffleur IA, Resend, Plausible |
+| BEAU | No | `OolalaDXB/BEAU-capital-Dev` / `beau-access-gateway`; Zero Access, Faraid, Dead Man Switch unverified |
+| BEAU Treasury | n/a | `OolalaDXB/BEAUTREASURY` — in development, see the constraint in §6 |
+| MyOolala | No | `OolalaDXB/myOolalaP1`; per-view QR + Wallet pass, Stripe tipping/shop/donations |
+| Les Vieilles Pierres | No | `OolalaDXB/lesvieillespierres`; admin tabs, Souffleur IA, Resend, Plausible |
 | District 267, PandaMood, padel.design | n/a | not software; figures come from the owner |
-| Oolala Social, Live Great | n/a | not software; see the image note in §7 |
+| Oolala Social, Live Great | n/a | not software; see the image note in §8 |
 
-Repository names above are guesses except where stated. Call `list_repos`
-first and map them properly — do not assume a name.
+Repository names above came from `list_repos` and several are near-duplicates
+(`rls-guard` vs `rlsguard`, `beau-treasury` vs `BEAUTREASURY`, three `myOolala`
+variants). Confirm by last-push date and content before trusting one; the stale
+twin will quietly give you wrong numbers.
 
 ## 5. Tasks
 
@@ -95,19 +95,19 @@ first and map them properly — do not assume a name.
    A number that has drifted should be corrected, not quietly dropped — these
    figures are the cards' strongest argument.
 
-2. **Recover modules the copy misses.** Bawaba gained SIEM export and
-   seven-year retention (`configs/bawaba.yaml`: `retention_days: 2555`) only
-   because the config was read. Expect the same in every repo: a migrations
+2. **Recover modules the copy misses.** Bawaba gained two selling points —
+   SIEM export and a seven-year audit retention — only because its configuration
+   was read rather than its README. Expect the same everywhere: a migrations
    directory and an edge-functions directory are a feature list nobody wrote
    down. Cross-check each card's `capabilities` against them.
 
 3. **Flag claims the source contradicts.** Report them; do not silently soften
    a claim the owner may be able to substantiate another way.
 
-4. **Watch for aspirational code.** In Bawaba, `MerkleRoot` is present in the
-   audit struct but marked `TODO P2` — so the card says hash chain and Ed25519
-   signature, which are implemented, and says nothing about Merkle windows,
-   which are not. Apply that test everywhere: shipped, or not mentioned.
+4. **Watch for aspirational code.** Bawaba's audit module carries one feature
+   as a declared TODO rather than an implementation, so the card names the parts
+   that are built and stays silent on that one. Apply the test everywhere:
+   shipped, or not mentioned.
 
 ## 6. Constraints — these are settled decisions, do not relitigate
 
@@ -120,16 +120,18 @@ first and map them properly — do not assume a name.
   the owner's instruction; it now reads "an enterprise TMS". Keep it that way.
 - **Infrastructure operators are fine, and are named.** Bawaba names Inwi DC
   Casablanca, STC Cloud Riyadh, G42 Abu Dhabi and Hetzner Frankfurt with their
-  compliance regimes, at the owner's instruction, and they are real values in
-  `configs/bawaba.yaml` under `routing.rules`.
+  compliance regimes, at the owner's instruction. They are real configured
+  routing targets, not decoration. Keep them.
 - **No preview or dev URLs.** A `*.vercel.app` dev deployment was linked from
   BEAU and has been removed; Sillon's demo link was dropped earlier for landing
   on an auth wall. Public, stable URLs only.
-- **Bawaba does not link to its source and does not claim to be open source.**
-  Both removed at the owner's instruction. Note the repo *is* public — but it
-  carries **no LICENSE file**, so "open source" would be inaccurate anyway:
-  absent a licence, a public repo is copyright-reserved by default. If a licence
-  is ever added, that decision can be revisited with the owner.
+- **Bawaba is closed source. It does not link to a repository and does not
+  claim to be open source.** Both removed at the owner's instruction; the owner
+  has since confirmed the project is to be treated as private. Do not add a
+  source link, do not describe it as open source, and do not quote its file
+  paths or internal identifiers into this repository — **TheStudioMT is a
+  public repository**, so anything committed here is published. Product
+  architecture already on the card is cleared by the owner; internals are not.
 - **Status vocabulary in use:** `Live`, `In development`, `Prototype`,
   `Private beta`, `On hold`, `Dossier on request`, `v1.0.0 · download`.
   A card with nothing to declare carries no badge.
@@ -137,7 +139,19 @@ first and map them properly — do not assume a name.
   `In development` and its own text says the modules are the scope being built.
   Preserve that honesty if you touch it.
 
-## 7. Known open items
+## 7. Repository visibility — verify before quoting anything
+
+`OolalaDXB/TheStudioMT` is **public**. Everything committed here, this file
+included, is published. Keep other projects' internals out of it.
+
+At the time of writing, `list_repos` reported these as **public**:
+`TheStudioMT`, `CoachGari`, `bawaba-command`, `bawaba`, `rls-guard`,
+`beaucollection`, `padel.design`. The owner expected at least one of those to be
+private, so the list is worth re-checking rather than trusting. Before you read
+a repo *or* quote from it, confirm its visibility with `list_repos` and treat
+anything public as already published.
+
+## 8. Known open items
 
 - **Oolala Social Foundation** is the only card whose image is a remote Unsplash
   stock photo rather than a local screenshot. It is both visually off and an
@@ -148,7 +162,7 @@ first and map them properly — do not assume a name.
   are ignored by Firefox, which lands on the top of the homepage instead. If
   beau.capital has a real anchor or a dedicated page, swap it in.
 
-## 8. Before you push
+## 9. Before you push
 
 ```bash
 npm ci
