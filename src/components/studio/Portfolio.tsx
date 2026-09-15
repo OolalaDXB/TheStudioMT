@@ -233,7 +233,7 @@ const categories: Category[] = [
         splitImages: { left: myoolalaWalletPassImg, right: myoolalaAppImg },
         splitPortrait: true,
         badge: 'Live',
-        url: 'https://myoolala.com/u/sofiareyes',
+        url: 'https://myoolala.com/profile.html',
         urlTitle: 'Open a live Oo',
         secondaryUrl: 'https://myoolala.com/auth?tab=signup',
         secondaryTitle: 'Create your Oo',
