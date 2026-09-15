@@ -69,7 +69,7 @@ const categories: Category[] = [
         imagePosition: 'object-top',
         badge: 'Dossier on request',
         url: 'https://bawaba.systems',
-        secondaryUrl: 'https://github.com/OolalaDXB/bawaba-command',
+        urlTitle: 'Open the site',
       },
     ],
   },
@@ -85,7 +85,8 @@ const categories: Category[] = [
         splitImages: { left: beauGatewayImg, right: beauAppImg },
         badge: 'Private beta',
         url: 'https://beau.capital',
-        secondaryUrl: 'https://beau-capital-dev.vercel.app',
+        secondaryUrl: 'https://beau.capital/#:~:text=Pricing-,Request,-a%20demo',
+        secondaryTitle: 'Request a demo',
       },
       {
         name: 'BEAU Treasury',
