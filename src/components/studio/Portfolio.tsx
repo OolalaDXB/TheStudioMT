@@ -12,6 +12,7 @@ import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
 import myoolalaWalletPassImg from '@/assets/portfolio/myoolala-wallet-pass.jpg';
 import rlsguardBlockImg from '@/assets/portfolio/rlsguard-block.png';
 import rlsguardPassImg from '@/assets/portfolio/rlsguard-pass.png';
+import coachgariSiteImg from '@/assets/portfolio/coachgari-site.png';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
@@ -189,7 +190,7 @@ const categories: Category[] = [
         description: 'Booking, payments and back-office for an independent coaching business.',
         execution: 'Site · Booking engine · Stripe Embedded Checkout · CRM · Back-office',
         detail: 'Full production: public site, booking flow, payment hub with mode-matched Stripe (a webhook whose livemode disagrees with the configured mode is refused, never guessed), transactional email outbox, CRM, calendar and reports. Database hardened with 17 pgTAP suites and per-permission authorisation checks on every write.',
-        image: placeholderImg,
+        image: coachgariSiteImg,
         badge: 'Live',
         url: 'https://coachgari28.com',
       },
