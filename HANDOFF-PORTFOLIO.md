@@ -4,7 +4,9 @@ For the next Claude Code session, which has access to **all** the product
 repositories. This one had only `OolalaDXB/TheStudioMT`, and that limit is the
 whole reason this file exists.
 
-Branch: `claude/sleepy-bardeen-4uwe0w`. Develop there, push there.
+Branch: work on `main` directly, as the later sessions did. History here was
+rewritten once and force-pushed, so fetch before you branch rather than reusing
+an old local checkout.
 
 ---
 
@@ -17,7 +19,10 @@ One page, one data file. Every card on the site is an object in the
 interface Venture {
   name, description, execution, detail   // copy
   capabilities?: string[]                 // the module list, rendered in the sheet
-  image, imagePosition?, splitImages?, gallery?, stackedImages?, splitPortrait?
+  logo?                                   // wordmark band above the captures
+  image, imagePosition?, splitPortrait?
+  splitImages?, stackedImages?, stripImages?   // card-face layouts
+  gallery?                                // what the zoom and the sheet show
   url?, urlTitle?, secondaryUrl?, secondaryTitle?
   badge?                                  // status pill
 }
@@ -26,6 +31,22 @@ interface Venture {
 `description` and `execution` show on the card. `detail` and `capabilities`
 show in the detail sheet, which opens on card click or on the `i` button.
 `VentureCard.tsx` renders all of it; you should rarely need to touch it.
+
+**How a card behaves**, settled after several rounds with the owner and not to
+be re-guessed:
+
+- **The captures enlarge.** Clicking any capture opens it in the dismissible
+  overlay; each half or cell opens its own image, not the first of the set.
+  A picture is for looking at.
+- **The name is the link.** It carries the project's URL with one arrow inside
+  the link as affordance. Cards with no URL are inert and open the sheet.
+- **The second action is written out** at the foot of the card — "Create your
+  Oo →", "Request a demo →" — never a bare glyph. Two mute ↗ arrows used to sit
+  beside the name; the owner found them too small and too silent. They are gone.
+- **The sheet leads with a thumbnail row**, then the argument, then the modules.
+- `stripImages` is a row of N crops on the card face while `gallery` holds the
+  full pages for the zoom, so a card can show tight, legible fragments and still
+  open the whole screen. Bawaba is the worked example.
 
 ## 2. The one rule
 
@@ -153,10 +174,18 @@ anything public as already published.
 
 ## 8. Known open items
 
-- **Oolala Social Foundation** is the only card whose image is a remote Unsplash
-  stock photo rather than a local screenshot. It is both visually off and an
-  external network dependency on the page. Needs a real asset from the owner.
+- **Oolala Social Foundation keeps its Unsplash stock photo.** Raised twice,
+  settled by the owner: leave it. It is the only card whose image loads from a
+  third party (`images.unsplash.com`) rather than the bundle. Do not "fix" it.
 - **Oolala Social Foundation** is also the only card with no `url` and no badge.
+- **Captures are the bottleneck, not layout.** Most cards hold one or two
+  full-page screenshots. A whole desktop page shrunk into a card is unreadable —
+  Bawaba proved it — so new work needs new captures showing a flow, not a
+  dashboard, and cropped tight. No layout fixes missing source material.
+- **Every URL on the page is unverified.** This environment has no outbound
+  network, so no link here has been opened. `sillon.me/demo` and
+  `myoolala.com/profile.html` were supplied by the owner and taken on trust;
+  `/u/sofiareyes` was supplied the same way and turned out to be wrong.
 - **BEAU's two arrows point at the same page** — `beau.capital` and a
   `#:~:text=` text fragment aimed at its "Request a demo" call. Text fragments
   are ignored by Firefox, which lands on the top of the homepage instead. If
@@ -179,6 +208,9 @@ not lopsided. Screenshots at 1280x900 and 390x844.
 
 Two rendering facts worth knowing before you debug either:
 
+- A category holding a single venture uses `md:grid-cols-2`, not the `auto-fit`
+  track the others use. `auto-fit` stretches a lone card across the whole row —
+  1136px against roughly 560 for every other card. Keep the branch.
 - The detail sheet and the lightbox are rendered into `<body>` via
   `createPortal`. They must be. Each category section wraps its grid in a
   `relative z-10` container, which is its own stacking context, so a sheet
