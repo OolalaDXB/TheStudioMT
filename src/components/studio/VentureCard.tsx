@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface VentureCardProps {
@@ -20,6 +20,96 @@ interface VentureCardProps {
   badge?: string;
   capabilities?: string[];
   index: number;
+}
+
+function DetailModal({
+  name, description, execution, detail, capabilities, onClose,
+}: {
+  name: string; description: string; execution: string; detail: string;
+  capabilities?: string[]; onClose: () => void;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';      // no page scroll behind the sheet
+    closeRef.current?.focus();
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
+  }, [onClose]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        role="dialog" aria-modal="true" aria-label={name}
+        className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center
+                   bg-black/70 backdrop-blur-sm p-0 sm:p-6 md:p-10"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 16 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
+          className="flex flex-col w-full sm:max-w-[42rem] bg-card cursor-default
+                     max-h-[92dvh] sm:max-h-[85dvh]
+                     rounded-t-2xl sm:rounded shadow-2xl"
+        >
+          {/* grab handle — phone only */}
+          <div className="sm:hidden pt-3 pb-1 flex justify-center shrink-0">
+            <span className="h-1 w-10 rounded-full bg-border" />
+          </div>
+
+          <header className="flex items-start gap-4 px-6 sm:px-10 pt-4 sm:pt-9 pb-4 shrink-0 border-b border-border">
+            <h3 className="font-display text-[1.5rem] sm:text-[1.75rem] font-normal text-primary leading-tight">
+              {name}
+            </h3>
+            <button
+              ref={closeRef}
+              onClick={onClose}
+              aria-label="Fermer"
+              className="ml-auto -mr-2 -mt-1 h-11 w-11 shrink-0 flex items-center justify-center rounded-full
+                         text-2xl font-light text-warm-muted hover:text-primary hover:bg-muted
+                         focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary
+                         transition-colors"
+            >
+              ×
+            </button>
+          </header>
+
+          <div className="overflow-y-auto overscroll-contain px-6 sm:px-10 pt-5
+                          pb-[calc(2rem+env(safe-area-inset-bottom,0px))] sm:pb-10">
+            <p className="font-body text-[1.0625rem] font-light text-muted-foreground mb-3 leading-[1.6]">
+              {description}
+            </p>
+            <p className="font-body text-[0.9375rem] text-warm-muted tracking-[0.02em] pb-5 border-b border-border">
+              {execution}
+            </p>
+            <p className="pt-5 text-base leading-[1.7] text-foreground">{detail}</p>
+
+            {capabilities && capabilities.length > 0 && (
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-[0.35rem] list-none p-0 m-0">
+                {capabilities.map((c) => (
+                  <li
+                    key={c}
+                    className="font-body text-[0.875rem] leading-[1.55] text-warm-muted relative pl-4
+                               before:absolute before:left-0 before:top-[0.62em] before:h-px before:w-2
+                               before:bg-warm-muted/50"
+                  >
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
 function Lightbox({
@@ -176,7 +266,7 @@ export function VentureCard({
   capabilities,
   index,
 }: VentureCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ images: string[]; start: number } | null>(null);
 
   const openLightbox = (images: string[], start: number, e: React.MouseEvent) => {
@@ -192,7 +282,7 @@ export function VentureCard({
     if ((e.target as HTMLElement).closest('.image-trigger')) {
       return;
     }
-    setIsExpanded(!isExpanded);
+    setDetailOpen(true);
   };
 
   const imgClass = (extra?: string) =>
@@ -200,6 +290,14 @@ export function VentureCard({
 
   return (
     <>
+      {detailOpen && (
+        <DetailModal
+          name={name} description={description} execution={execution}
+          detail={detail} capabilities={capabilities}
+          onClose={() => setDetailOpen(false)}
+        />
+      )}
+
       {lightbox && (
         <Lightbox
           images={lightbox.images}
@@ -330,12 +428,20 @@ export function VentureCard({
                 ↗
               </a>
             )}
-            <span
-              className="ml-auto font-body text-xl font-light text-warm-muted transition-transform duration-300"
-              style={{ transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)' }}
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setDetailOpen(true); }}
+              aria-label={`En savoir plus sur ${name}`}
+              title="En savoir plus"
+              className="ml-auto -mr-2 h-11 w-11 shrink-0 flex items-center justify-center
+                         focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-full"
             >
-              +
-            </span>
+              <span className="h-7 w-7 flex items-center justify-center rounded-full border border-border
+                               font-body text-[0.8125rem] italic text-warm-muted transition-colors duration-300
+                               group-hover:border-warm-muted group-hover:text-primary">
+                i
+              </span>
+            </button>
           </h3>
 
           <p className="font-body text-[1.0625rem] font-light text-muted-foreground mb-4 leading-[1.6]">
@@ -346,34 +452,6 @@ export function VentureCard({
             {execution}
           </p>
 
-          <motion.div
-            initial={false}
-            animate={{
-              height: isExpanded ? 'auto' : 0,
-              opacity: isExpanded ? 1 : 0,
-              marginTop: isExpanded ? 16 : 0,
-            }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="overflow-hidden"
-          >
-            <p className="pt-4 border-t border-border text-base leading-[1.7] text-foreground">
-              {detail}
-            </p>
-            {capabilities && capabilities.length > 0 && (
-              <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-[0.3rem] list-none p-0 m-0">
-                {capabilities.map((c) => (
-                  <li
-                    key={c}
-                    className="font-body text-[0.875rem] leading-[1.55] text-warm-muted relative pl-4
-                               before:absolute before:left-0 before:top-[0.62em] before:h-px before:w-2
-                               before:bg-warm-muted/50"
-                  >
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </motion.div>
         </div>
       </motion.div>
     </>
