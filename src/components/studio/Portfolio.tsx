@@ -6,6 +6,7 @@ import { VentureCard } from './VentureCard';
 import beauImg from '@/assets/portfolio/beau.png';
 import beauAppImg from '@/assets/portfolio/beau-app.png';
 import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
+import bawabaLogoImg from '@/assets/portfolio/bawaba-logo.png';
 import consoleDashboardImg from '@/assets/portfolio/console-dashboard.webp';
 import consoleRoutingImg from '@/assets/portfolio/console-routing.webp';
 import consoleAuditImg from '@/assets/portfolio/console-audit.webp';
@@ -43,6 +44,7 @@ interface Venture {
   imagePosition?: string;
   splitImages?: { left: string; right: string };
   gallery?: string[];
+  logo?: string;
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
@@ -85,6 +87,7 @@ const categories: Category[] = [
           'CISO dashboard',
           'Docker-ready deployment',
         ],
+        logo: bawabaLogoImg,
         image: consoleDashboardImg,
         imagePosition: 'object-top',
         gallery: [consoleDashboardImg, consoleRoutingImg, consoleAuditImg],
@@ -170,6 +173,8 @@ const categories: Category[] = [
         badge: 'Live',
         splitImages: { left: sillonImg, right: sillonDashboardImg },
         url: 'https://sillon.me',
+        secondaryUrl: 'https://sillon.me/demo',
+        secondaryTitle: 'Request a demo',
       },
       {
         name: 'RLS Guard',

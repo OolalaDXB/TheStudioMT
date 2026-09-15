@@ -14,6 +14,7 @@ interface VentureCardProps {
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   gallery?: string[];
+  logo?: string;
   url?: string;
   urlTitle?: string;
   secondaryUrl?: string;
@@ -323,6 +324,7 @@ export function VentureCard({
   splitPortrait = false,
   stackedImages,
   gallery,
+  logo,
   url,
   urlTitle = 'Open the site',
   secondaryUrl,
@@ -394,6 +396,23 @@ export function VentureCard({
         {/* Image area — the largest target on the card, so it is the link itself.
             Cards with nowhere to go fall through to the card click and open the sheet. */}
         <ImageFrame url={url} title={urlTitle} name={name}>
+          {logo && (
+            <div
+              className="flex items-center px-6 sm:px-8 pt-7 pb-6 border-b border-border"
+              /* the wordmark ships on an opaque #F6F4EF plate, so the band wears the
+                 same colour rather than framing it in a visible box */
+              style={{ backgroundColor: '#F6F4EF' }}
+            >
+              <img
+                src={logo}
+                alt={`${name} wordmark`}
+                loading="lazy"
+                decoding="async"
+                className="h-12 sm:h-[3.75rem] w-auto object-contain object-left"
+              />
+            </div>
+          )}
+
           {stackedImages ? (
             <div className="overflow-hidden">
               <div
