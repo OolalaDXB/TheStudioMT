@@ -126,8 +126,6 @@ const categories: Category[] = [
         badge: 'Live',
         splitImages: { left: sillonImg, right: sillonDashboardImg },
         url: 'https://sillon.me',
-        secondaryUrl: 'https://sillon.me/t/demo-sillon',
-        secondaryTitle: 'Ouvrir la démo',
       },
       {
         name: 'RLS Guard',
