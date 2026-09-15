@@ -18,6 +18,7 @@ interface VentureCardProps {
   secondaryUrl?: string;
   secondaryTitle?: string;
   badge?: string;
+  capabilities?: string[];
   index: number;
 }
 
@@ -172,6 +173,7 @@ export function VentureCard({
   secondaryUrl,
   secondaryTitle = 'Ouvrir la démo',
   badge,
+  capabilities,
   index,
 }: VentureCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -357,6 +359,20 @@ export function VentureCard({
             <p className="pt-4 border-t border-border text-base leading-[1.7] text-foreground">
               {detail}
             </p>
+            {capabilities && capabilities.length > 0 && (
+              <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-[0.3rem] list-none p-0 m-0">
+                {capabilities.map((c) => (
+                  <li
+                    key={c}
+                    className="font-body text-[0.875rem] leading-[1.55] text-warm-muted relative pl-4
+                               before:absolute before:left-0 before:top-[0.62em] before:h-px before:w-2
+                               before:bg-warm-muted/50"
+                  >
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            )}
           </motion.div>
         </div>
       </motion.div>

@@ -48,6 +48,7 @@ interface Venture {
   secondaryUrl?: string;
   secondaryTitle?: string;
   badge?: string;
+  capabilities?: string[];
 }
 
 interface Category {
@@ -102,9 +103,25 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Sillon',
-        description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
-        execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
-        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for a pilot distributor, then generalised into a multi-tenant platform. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
+        description: 'Multi-tenant ERP for physical music distribution — and the SaaS that bills it.',
+        execution: 'Domain modeling · Multi-tenant architecture · POS · Accounting · E-invoicing · Pro portal',
+        detail: 'Four surfaces on one schema: the internal ERP, a B2B portal for professional buyers, a platform admin, and an AI assistant. 135 tables, 221 database functions, 41 edge functions. It also bills its own tenants — plans, add-ons, subscriptions and invoices through Stripe Connect — which makes it a SaaS rather than an installation. Isolation is enforced by policy, not by a front-end filter: every tenant table carries both the tenant and a per-tenant role predicate, and the posture is replayed and diff-checked in CI on every pull request after an audit found three security controls that were all green and none of which measured anything.',
+        capabilities: [
+          'Multi-tenant, per-tenant role predicates',
+          'Point of sale with cash sessions',
+          'Multi-location stock, lots & movements',
+          'Replenishment proposals & backorders',
+          'Purchasing, goods receipt & returns',
+          'Landed-cost allocation on imports',
+          'AP / AR ledgers & payment alerts',
+          'Factur-X e-invoicing & recurring invoices',
+          'B2B pro portal with price groups',
+          'Tenant billing via Stripe Connect',
+          'Tamper-evident audit chain',
+          'Uptime, error & RLS-drift monitoring',
+          'Discogs · Ship24 · VIES · FX rates',
+          'Tenant go-live with break-glass log',
+        ],
         image: sillonImg,
         badge: 'Live',
         splitImages: { left: sillonImg, right: sillonDashboardImg },
@@ -146,9 +163,25 @@ const categories: Category[] = [
       },
       {
         name: 'Maisons.co',
-        description: 'Property collection platform — booking, operations, and financial management.',
-        execution: 'Full-stack build · Multi-property ops · Revenue management · Guest systems',
-        detail: 'Full-stack hospitality platform built with Lovable + Supabase. 21K+ lines of code. Direct booking engine with dynamic pricing. Admin dashboard: calendar, bookings, guest management, contracts, financial ledger with multi-currency support (EUR/USD/AED/GEL), FX rates, payment tracking, and P&L per property. Multilingual guest onboarding (EN/FR/AR/RU). Three properties live: Maison Atlantique (Morbihan), Maison Georgia (Gudauri), La Garenne-Colombes (Paris). Next: Cascais 2027.',
+        description: 'Short-term rentals and long-term leases, with the accounting that follows both.',
+        execution: 'Full-stack build · Booking · Leases & rent calls · Reconciliation · Team ops',
+        detail: 'Two businesses in one schema. Short stays run a direct booking engine with seasonal pricing, promo codes and iCal channel sync; long lets run leases, rent calls and the French IRL index. Underneath both sits the part that usually gets outsourced to a spreadsheet: a multi-currency ledger, bank reconciliation with expense-matching rules, charge reconciliation and P&L per property. 76 tables, 125 database functions, 27 edge functions. Three properties live — Morbihan, Gudauri, Paris.',
+        capabilities: [
+          'Direct booking engine & contracts',
+          'Seasonal pricing, promo codes, suggestions',
+          'iCal channel sync',
+          'Leases, rent calls & IRL indexation',
+          'Multi-currency ledger (EUR/USD/AED/GEL)',
+          'Bank reconciliation & expense matching',
+          'Charge reconciliation & P&L per property',
+          'Legal entities & portfolio access',
+          'Cleaning checklists & templates',
+          'Team notes, issues & guidelines',
+          'Guest onboarding in EN/FR/AR/RU',
+          'Souffleur assistant with action log',
+          'GDPR purge runs',
+          'Security alerts & Telegram relay',
+        ],
         image: maisonsHeroImg,
         splitImages: { left: maisonsHeroImg, right: maisonsDashboardImg },
         badge: 'Live',
@@ -188,9 +221,23 @@ const categories: Category[] = [
       },
       {
         name: 'Coach Gari',
-        description: 'Booking, multi-rail payments, partner commissions and CRM for a coach who travels.',
-        execution: 'Site · Booking & availability · Payment hub · Commission settlements · CRM · Consent · Back-office',
-        detail: 'Built for one coach, architected as a platform: 47 tables, 330 database functions, 93 migrations. Public site and booking with availability rules, exceptions and held slots across timezones. Payments run through BEAU PH, a provider-agnostic hub — Stripe and PayPal live, twelve further rails declared and refusing to transact until implemented — with the mode declared explicitly: a webhook whose livemode disagrees with the configured mode is refused, and an unset mode refuses everything rather than guessing. A full partner-commission chain from proposal to signed agreement to settlement with line items, origins and exemptions. Tour stops with their own services, for a coach who works across locations. CRM with notes, consent management, refunds and chargebacks, and a multi-channel outbox — email, WhatsApp, push. Audience analytics from the website and the social platforms side by side. Authorisation is checked per permission on every write; 16 pgTAP suites cover one domain each, from booking and payments to privacy and commission.',
+        description: 'Coaching business and influencer partnerships, run from one back-office.',
+        execution: 'Site · Booking · Payment hub · Brand partnerships · CRM · Back-office',
+        detail: 'A coach with a 23K audience earns two ways — sessions and brand partnerships — and the back-office runs both. Deals move from proposal to signed agreement to settlement, with commission origins, exemptions and per-line statements, beside a booking engine that holds slots across timezones for a coach who works from several locations. Built for one business, architected as a platform: 47 tables, 330 database functions, 19 edge functions. Authorisation is checked per permission on every write, and 16 pgTAP suites cover one domain each.',
+        capabilities: [
+          'Booking, availability rules & exceptions',
+          'Slots held across timezones',
+          'Tour stops with their own services',
+          'BEAU PH hub — Stripe & PayPal live',
+          'Mode-matched webhooks, never guessed',
+          'Brand deals: proposal → agreement → settlement',
+          'Commission origins & exemptions',
+          'Partner earnings & settlement statements',
+          'CRM with notes, consent management',
+          'Refunds & chargebacks',
+          'Email, WhatsApp & push outbox',
+          'Audience analytics — web and social',
+        ],
         image: coachgariAccueilImg,
         splitImages: { left: coachgariAccueilImg, right: coachgariBackofficeImg },
         badge: 'Live',
