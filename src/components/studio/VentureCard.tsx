@@ -24,21 +24,23 @@ interface VentureCardProps {
 }
 
 function DetailModal({
-  name, description, execution, detail, capabilities, onClose,
+  name, description, execution, detail, capabilities, images, zoomOpen, onZoom, onClose,
 }: {
   name: string; description: string; execution: string; detail: string;
-  capabilities?: string[]; onClose: () => void;
+  capabilities?: string[]; images: string[]; zoomOpen: boolean;
+  onZoom: (index: number) => void; onClose: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    // While the zoom is open it owns Escape — otherwise one key would close both.
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && !zoomOpen) onClose(); };
     window.addEventListener('keydown', onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';      // no page scroll behind the sheet
     closeRef.current?.focus();
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
-  }, [onClose]);
+  }, [onClose, zoomOpen]);
 
   // Rendered into <body>: the card lives inside a section that creates its own
   // stacking context, so a z-index alone would still be painted under the
@@ -87,6 +89,38 @@ function DetailModal({
 
           <div className="overflow-y-auto overscroll-contain px-6 sm:px-10 pt-5
                           pb-[calc(2rem+env(safe-area-inset-bottom,0px))] sm:pb-10">
+            {images.length > 0 && (
+              <div
+                className={cn(
+                  'grid gap-2 mb-6',
+                  images.length === 1 ? 'grid-cols-1'
+                    : images.length === 2 ? 'grid-cols-2'
+                    : 'grid-cols-2 sm:grid-cols-3'
+                )}
+              >
+                {images.map((src, i) => (
+                  <button
+                    key={src + i}
+                    type="button"
+                    onClick={() => onZoom(i)}
+                    aria-label={`Enlarge image ${i + 1} of ${images.length}`}
+                    className="group/thumb relative overflow-hidden rounded border border-border
+                               aspect-[16/10] cursor-zoom-in
+                               focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  >
+                    <img
+                      src={src}
+                      alt={`${name} ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top transition-transform duration-500
+                                 group-hover/thumb:scale-[1.05]"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
             <p className="font-body text-[1.0625rem] font-light text-muted-foreground mb-3 leading-[1.6]">
               {description}
             </p>
@@ -253,6 +287,31 @@ function Lightbox({
   );
 }
 
+/**
+ * The card face. When the project has a site it is a link, so the click lands on
+ * the largest thing on the card instead of a 12px arrow. Without a URL it stays a
+ * plain frame and the click falls through to the card, which opens the sheet.
+ */
+function ImageFrame({
+  url, title, name, children,
+}: {
+  url?: string; title: string; name: string; children: React.ReactNode;
+}) {
+  if (!url) return <div className="relative">{children}</div>;
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={title}
+      aria-label={`${name} — ${title}`}
+      className="relative block focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+    >
+      {children}
+    </a>
+  );
+}
+
 export function VentureCard({
   name,
   description,
@@ -275,19 +334,19 @@ export function VentureCard({
   const [detailOpen, setDetailOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ images: string[]; start: number } | null>(null);
 
-  const openLightbox = (images: string[], start: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLightbox({ images, start });
-  };
+  // Every capture this card holds, whichever layout it uses. The sheet shows
+  // them; zooming happens there, so the card face is free to be a link.
+  const images = stackedImages
+    ? [stackedImages.hero, stackedImages.small]
+    : splitImages
+      ? [splitImages.left, splitImages.right]
+      : gallery && gallery.length > 0
+        ? gallery
+        : [image];
 
   const handleCardClick = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('.arrow-link')) {
-      e.stopPropagation();
-      return;
-    }
-    if ((e.target as HTMLElement).closest('.image-trigger')) {
-      return;
-    }
+    // A real link handles its own click; everything else opens the sheet.
+    if ((e.target as HTMLElement).closest('a')) return;
     setDetailOpen(true);
   };
 
@@ -300,6 +359,9 @@ export function VentureCard({
         <DetailModal
           name={name} description={description} execution={execution}
           detail={detail} capabilities={capabilities}
+          images={images}
+          zoomOpen={lightbox !== null}
+          onZoom={(i) => setLightbox({ images, start: i })}
           onClose={() => setDetailOpen(false)}
         />
       )}
@@ -329,29 +391,24 @@ export function VentureCard({
           'hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(26,58,58,0.1)]'
         )}
       >
-        {/* Image area */}
-        <div className="relative">
+        {/* Image area — the largest target on the card, so it is the link itself.
+            Cards with nowhere to go fall through to the card click and open the sheet. */}
+        <ImageFrame url={url} title={urlTitle} name={name}>
           {stackedImages ? (
             <div className="overflow-hidden">
               <div
-                className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden image-trigger cursor-zoom-in"
-                onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 0, e)}
-              >
+                className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden">
                 <img src={stackedImages.hero} alt={`${name} hero`} loading="lazy" decoding="async" className={imgClass('object-center')} />
               </div>
               <div
-                className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border image-trigger cursor-zoom-in"
-                onClick={(e) => openLightbox([stackedImages.hero, stackedImages.small], 1, e)}
-              >
+                className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border">
                 <img src={stackedImages.small} alt={`${name} dashboard`} loading="lazy" decoding="async" className={imgClass('object-top')} />
               </div>
             </div>
           ) : splitImages ? (
             <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[320px] sm:h-[380px] md:h-[420px]' : 'h-[200px] sm:h-[240px] md:h-[280px]')}>
               <div
-                className="w-1/2 overflow-hidden image-trigger cursor-zoom-in"
-                onClick={(e) => openLightbox([splitImages.left, splitImages.right], 0, e)}
-              >
+                className="w-1/2 overflow-hidden">
                 <img
                   src={splitImages.left}
                   alt={`${name} left`}
@@ -361,9 +418,7 @@ export function VentureCard({
                 />
               </div>
               <div
-                className="w-1/2 overflow-hidden border-l border-border/50 image-trigger cursor-zoom-in"
-                onClick={(e) => openLightbox([splitImages.left, splitImages.right], 1, e)}
-              >
+                className="w-1/2 overflow-hidden border-l border-border/50">
                 <img
                   src={splitImages.right}
                   alt={`${name} right`}
@@ -375,10 +430,9 @@ export function VentureCard({
             </div>
           ) : (
             <div
-              className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative image-trigger cursor-zoom-in"
-              onClick={(e) => openLightbox(gallery && gallery.length > 0 ? gallery : [image], 0, e)}
+              className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative"
               onMouseEnter={() => {
-                // Discreetly preload remaining gallery images on hover
+                // Discreetly preload the rest of the gallery for the sheet
                 if (gallery && gallery.length > 1) {
                   gallery.slice(1).forEach((src) => {
                     const i = new Image();
@@ -410,35 +464,27 @@ export function VentureCard({
               {badge}
             </div>
           )}
-        </div>
+        </ImageFrame>
 
         {/* Content */}
         <div className="p-8">
           <h3 className="font-display text-[1.875rem] font-normal text-primary mb-2 flex items-center gap-2">
-            {name}
-            {url && (
+            {url ? (
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
-                onClick={(e) => e.stopPropagation()}
                 title={urlTitle}
+                className="inline-flex items-baseline gap-2 transition-colors duration-300 hover:text-accent
+                           focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-sm"
               >
-                ↗
+                {name}
+                <span aria-hidden="true" className="text-[0.9rem] text-warm-muted transition-colors duration-300 group-hover:text-accent">
+                  ↗
+                </span>
               </a>
-            )}
-            {secondaryUrl && (
-              <a
-                href={secondaryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
-                onClick={(e) => e.stopPropagation()}
-                title={secondaryTitle}
-              >
-                ↗
-              </a>
+            ) : (
+              name
             )}
             <button
               type="button"
@@ -464,6 +510,20 @@ export function VentureCard({
             {execution}
           </p>
 
+          {secondaryUrl && (
+            <a
+              href={secondaryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-1.5 font-body text-[0.9375rem] text-warm-muted
+                         border-b border-transparent hover:text-primary hover:border-warm-muted
+                         transition-colors duration-300
+                         focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-sm"
+            >
+              {secondaryTitle}
+              <span aria-hidden="true">→</span>
+            </a>
+          )}
         </div>
       </motion.div>
     </>
