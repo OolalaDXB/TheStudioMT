@@ -10,6 +10,8 @@ import bawabaImg from '@/assets/portfolio/bawaba.png';
 import myoolalaLandingImg from '@/assets/portfolio/myoolala-landing.png';
 import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
 import myoolalaWalletPassImg from '@/assets/portfolio/myoolala-wallet-pass.jpg';
+import rlsguardBlockImg from '@/assets/portfolio/rlsguard-block.png';
+import rlsguardPassImg from '@/assets/portfolio/rlsguard-pass.png';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
@@ -113,9 +115,13 @@ const categories: Category[] = [
         description: 'Security CI for multi-tenant Postgres. Catches tenant isolation breaks before they merge.',
         execution: 'CLI · GitHub Action · Migration replay · Evidence report',
         detail: 'Replays your migrations on an ephemeral Postgres, asserts four anti-leak invariants — RLS enabled on every tenant table, no permissive true policy reachable by an unprivileged role, no write policy blind to the tenant, no SECURITY DEFINER function without a caller-identity guard — and blocks the merge on a violation. No production secret is ever needed: the replay reads only your repository. Every green run emits a tenant isolation evidence report (JSON + self-contained HTML) you can attach to a security questionnaire. Written after an audit found three security controls that were all green and none of which measured anything.',
-        image: placeholderImg,
-        badge: 'Source disponible',
-        url: 'https://github.com/OolalaDXB/rls-guard',
+        image: rlsguardBlockImg,
+        splitImages: { left: rlsguardBlockImg, right: rlsguardPassImg },
+        badge: 'v1.0.0 · à télécharger',
+        url: 'https://github.com/OolalaDXB/rls-guard/releases/tag/v1.0.0',
+        urlTitle: 'Télécharger la v1.0.0',
+        secondaryUrl: 'https://github.com/OolalaDXB/rls-guard',
+        secondaryTitle: 'Voir le dépôt',
       },
     ],
   },
