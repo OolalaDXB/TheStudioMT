@@ -188,9 +188,9 @@ const categories: Category[] = [
       },
       {
         name: 'Coach Gari',
-        description: 'Booking, payments and back-office for an independent coaching business.',
-        execution: 'Site · Booking engine · Stripe Embedded Checkout · CRM · Back-office',
-        detail: 'Full production: public site, booking flow, payment hub with mode-matched Stripe (a webhook whose livemode disagrees with the configured mode is refused, never guessed), transactional email outbox, CRM, calendar and reports. Database hardened with 17 pgTAP suites and per-permission authorisation checks on every write.',
+        description: 'Booking, multi-rail payments, partner commissions and CRM for a coach who travels.',
+        execution: 'Site · Booking & availability · Payment hub · Commission settlements · CRM · Consent · Back-office',
+        detail: 'Built for one coach, architected as a platform: 47 tables, 330 database functions, 93 migrations. Public site and booking with availability rules, exceptions and held slots across timezones. Payments run through BEAU PH, a provider-agnostic hub — Stripe and PayPal live, twelve further rails declared and refusing to transact until implemented — with the mode declared explicitly: a webhook whose livemode disagrees with the configured mode is refused, and an unset mode refuses everything rather than guessing. A full partner-commission chain from proposal to signed agreement to settlement with line items, origins and exemptions. Tour stops with their own services, for a coach who works across locations. CRM with notes, consent management, refunds and chargebacks, and a multi-channel outbox — email, WhatsApp, push. Audience analytics from the website and the social platforms side by side. Authorisation is checked per permission on every write; 16 pgTAP suites cover one domain each, from booking and payments to privacy and commission.',
         image: coachgariAccueilImg,
         splitImages: { left: coachgariAccueilImg, right: coachgariBackofficeImg },
         badge: 'Live',
