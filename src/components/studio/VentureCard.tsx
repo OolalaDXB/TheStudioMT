@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 
 interface VentureCardProps {
@@ -39,7 +40,10 @@ function DetailModal({
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev; };
   }, [onClose]);
 
-  return (
+  // Rendered into <body>: the card lives inside a section that creates its own
+  // stacking context, so a z-index alone would still be painted under the
+  // sections that follow it.
+  return createPortal(
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -71,7 +75,7 @@ function DetailModal({
             <button
               ref={closeRef}
               onClick={onClose}
-              aria-label="Fermer"
+              aria-label="Close"
               className="ml-auto -mr-2 -mt-1 h-11 w-11 shrink-0 flex items-center justify-center rounded-full
                          text-2xl font-light text-warm-muted hover:text-primary hover:bg-muted
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary
@@ -108,7 +112,8 @@ function DetailModal({
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 
@@ -153,7 +158,7 @@ function Lightbox({
     img.src = nextSrc;
   }, [idx, images, hasMany]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -189,14 +194,14 @@ function Lightbox({
               <button
                 onClick={prev}
                 className="absolute left-1 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
-                aria-label="Précédent"
+                aria-label="Previous"
               >
                 ‹
               </button>
               <button
                 onClick={next}
                 className="absolute right-1 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl flex items-center justify-center backdrop-blur-sm transition-colors"
-                aria-label="Suivant"
+                aria-label="Next"
               >
                 ›
               </button>
@@ -225,7 +230,7 @@ function Lightbox({
               >
                 <img
                   src={src}
-                  alt={`${alt} miniature ${i + 1}`}
+                  alt={`${alt} thumbnail ${i + 1}`}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover"
@@ -238,12 +243,13 @@ function Lightbox({
         <button
           onClick={onClose}
           className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/70 hover:text-white text-3xl leading-none font-light transition-colors w-10 h-10 flex items-center justify-center"
-          aria-label="Fermer"
+          aria-label="Close"
         >
           ×
         </button>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 
@@ -259,9 +265,9 @@ export function VentureCard({
   stackedImages,
   gallery,
   url,
-  urlTitle = 'Ouvrir le site',
+  urlTitle = 'Open the site',
   secondaryUrl,
-  secondaryTitle = 'Ouvrir la démo',
+  secondaryTitle = 'Open the demo',
   badge,
   capabilities,
   index,
@@ -431,8 +437,8 @@ export function VentureCard({
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); setDetailOpen(true); }}
-              aria-label={`En savoir plus sur ${name}`}
-              title="En savoir plus"
+              aria-label={`More about ${name}`}
+              title="Read more"
               className="ml-auto -mr-2 h-11 w-11 shrink-0 flex items-center justify-center
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-full"
             >
