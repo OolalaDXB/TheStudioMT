@@ -43,7 +43,7 @@ export function Footer() {
           
           {/* Bottom */}
           <div className="text-xs text-muted-foreground tracking-[0.15em] text-center">
-            Dubai · Paris · Brittany · Tbilisi · Gaborone
+            Dubai · Paris · Vannes · Tbilisi
           </div>
         </motion.div>
       </div>

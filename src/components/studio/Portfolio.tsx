@@ -9,6 +9,11 @@ import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
 import bawabaImg from '@/assets/portfolio/bawaba.png';
 import myoolalaLandingImg from '@/assets/portfolio/myoolala-landing.png';
 import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
+import myoolalaWalletPassImg from '@/assets/portfolio/myoolala-wallet-pass.jpg';
+import rlsguardBlockImg from '@/assets/portfolio/rlsguard-block.png';
+import rlsguardPassImg from '@/assets/portfolio/rlsguard-pass.png';
+import coachgariAccueilImg from '@/assets/portfolio/coachgari-accueil.png';
+import coachgariBackofficeImg from '@/assets/portfolio/coachgari-backoffice.png';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
@@ -39,8 +44,11 @@ interface Venture {
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
+  urlTitle?: string;
   secondaryUrl?: string;
+  secondaryTitle?: string;
   badge?: string;
+  capabilities?: string[];
 }
 
 interface Category {
@@ -60,7 +68,8 @@ const categories: Category[] = [
         image: bawabaImg,
         imagePosition: 'object-top',
         badge: 'Dossier sur demande',
-        url: 'https://github.com/OolalaDXB/bawaba-command',
+        url: 'https://bawaba.systems',
+        secondaryUrl: 'https://github.com/OolalaDXB/bawaba-command',
       },
     ],
   },
@@ -74,6 +83,7 @@ const categories: Category[] = [
         detail: 'Wealth structuring platform for expat families with assets across 4+ jurisdictions. Zero Access encryption architecture — only the user can decrypt their data. Dashboard for multi-currency portfolios, liabilities, estate documents. Access gateway for advisors and family members with granular permissions. Features: Dead Man Switch, Islamic/Faraid estate planning support. Premium pricing: €1,500–€4,000/year. Private beta.',
         image: beauImg,
         splitImages: { left: beauGatewayImg, right: beauAppImg },
+        badge: 'Bêta privée',
         url: 'https://beau.capital',
         secondaryUrl: 'https://beau-capital-dev.vercel.app',
       },
@@ -84,7 +94,7 @@ const categories: Category[] = [
         detail: 'Treasury management platform built on 16 years of payments infrastructure experience across 83 countries. Targets the gap between spreadsheet-driven treasury and enterprise TMS (Kyriba, ION). Cash visibility, FX exposure, payment orchestration. ISO 20022 native — not retrofitted. Strategic synergy with KM OpenPay for execution rails.',
         image: beauTreasuryImg,
         imagePosition: 'object-top',
-        url: 'https://www.thestudio.mt/',
+        badge: 'Prototype',
       },
     ],
   },
@@ -93,12 +103,42 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Sillon',
-        description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
-        execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
-        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
+        description: 'Multi-tenant ERP for physical music distribution — and the SaaS that bills it.',
+        execution: 'Domain modeling · Multi-tenant architecture · POS · Accounting · E-invoicing · Pro portal',
+        detail: 'Four surfaces on one schema: the internal ERP, a B2B portal for professional buyers, a platform admin, and an AI assistant. 135 tables, 221 database functions, 41 edge functions. It also bills its own tenants — plans, add-ons, subscriptions and invoices through Stripe Connect — which makes it a SaaS rather than an installation. Isolation is enforced by policy, not by a front-end filter: every tenant table carries both the tenant and a per-tenant role predicate, and the posture is replayed and diff-checked in CI on every pull request after an audit found three security controls that were all green and none of which measured anything.',
+        capabilities: [
+          'Multi-tenant, per-tenant role predicates',
+          'Point of sale with cash sessions',
+          'Multi-location stock, lots & movements',
+          'Replenishment proposals & backorders',
+          'Purchasing, goods receipt & returns',
+          'Landed-cost allocation on imports',
+          'AP / AR ledgers & payment alerts',
+          'Factur-X e-invoicing & recurring invoices',
+          'B2B pro portal with price groups',
+          'Tenant billing via Stripe Connect',
+          'Tamper-evident audit chain',
+          'Uptime, error & RLS-drift monitoring',
+          'Discogs · Ship24 · VIES · FX rates',
+          'Tenant go-live with break-glass log',
+        ],
         image: sillonImg,
+        badge: 'Live',
         splitImages: { left: sillonImg, right: sillonDashboardImg },
-        url: 'https://www.sillom.me',
+        url: 'https://sillon.me',
+      },
+      {
+        name: 'RLS Guard',
+        description: 'Security CI for multi-tenant Postgres. Catches tenant isolation breaks before they merge.',
+        execution: 'CLI · GitHub Action · Migration replay · Evidence report',
+        detail: 'Replays your migrations on an ephemeral Postgres, asserts four anti-leak invariants — RLS enabled on every tenant table, no permissive true policy reachable by an unprivileged role, no write policy blind to the tenant, no SECURITY DEFINER function without a caller-identity guard — and blocks the merge on a violation. No production secret is ever needed: the replay reads only your repository. Every green run emits a tenant isolation evidence report (JSON + self-contained HTML) you can attach to a security questionnaire. Written after an audit found three security controls that were all green and none of which measured anything.',
+        image: rlsguardBlockImg,
+        splitImages: { left: rlsguardBlockImg, right: rlsguardPassImg },
+        badge: 'v1.0.0 · à télécharger',
+        url: 'https://github.com/OolalaDXB/rls-guard/releases/tag/v1.0.0',
+        urlTitle: 'Télécharger la v1.0.0',
+        secondaryUrl: 'https://github.com/OolalaDXB/rls-guard',
+        secondaryTitle: 'Voir le dépôt',
       },
     ],
   },
@@ -110,17 +150,39 @@ const categories: Category[] = [
         description: 'Multi-view digital passport. One identity, many faces.',
         execution: 'Product design · Per-view architecture · Wallet integration · Stripe',
         detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
-        image: myoolalaLandingImg,
-        splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
-        url: 'https://myoolala.com',
+        image: myoolalaWalletPassImg,
+        splitImages: { left: myoolalaWalletPassImg, right: myoolalaAppImg },
+        splitPortrait: true,
+        badge: 'Live',
+        url: 'https://myoolala.com/u/mickael/social',
+        urlTitle: 'Voir un Oo en vrai',
+        secondaryUrl: 'https://myoolala.com/auth?tab=signup',
+        secondaryTitle: 'Créer votre Oo',
       },
       {
         name: 'Maisons.co',
-        description: 'Property collection platform — booking, operations, and financial management.',
-        execution: 'Full-stack build · Multi-property ops · Revenue management · Guest systems',
-        detail: 'Full-stack hospitality platform built with Lovable + Supabase. 21K+ lines of code. Direct booking engine with dynamic pricing. Admin dashboard: calendar, bookings, guest management, contracts, financial ledger with multi-currency support (EUR/USD/AED/GEL), FX rates, payment tracking, and P&L per property. Multilingual guest onboarding (EN/FR/AR/RU). Three properties live: Maison Atlantique (Morbihan), Maison Georgia (Gudauri), La Garenne-Colombes (Paris). Next: Cascais 2027.',
+        description: 'Short-term rentals and long-term leases, with the accounting that follows both.',
+        execution: 'Full-stack build · Booking · Leases & rent calls · Reconciliation · Team ops',
+        detail: 'Two businesses in one schema. Short stays run a direct booking engine with seasonal pricing, promo codes and iCal channel sync; long lets run leases, rent calls and the French IRL index. Underneath both sits the part that usually gets outsourced to a spreadsheet: a multi-currency ledger, bank reconciliation with expense-matching rules, charge reconciliation and P&L per property. 76 tables, 125 database functions, 27 edge functions. Three properties live — Morbihan, Gudauri, Paris.',
+        capabilities: [
+          'Direct booking engine & contracts',
+          'Seasonal pricing, promo codes, suggestions',
+          'iCal channel sync',
+          'Leases, rent calls & IRL indexation',
+          'Multi-currency ledger (EUR/USD/AED/GEL)',
+          'Bank reconciliation & expense matching',
+          'Charge reconciliation & P&L per property',
+          'Legal entities & portfolio access',
+          'Cleaning checklists & templates',
+          'Team notes, issues & guidelines',
+          'Guest onboarding in EN/FR/AR/RU',
+          'Souffleur assistant with action log',
+          'GDPR purge runs',
+          'Security alerts & Telegram relay',
+        ],
         image: maisonsHeroImg,
         splitImages: { left: maisonsHeroImg, right: maisonsDashboardImg },
+        badge: 'Live',
         url: 'https://maisons.co',
       },
     ],
@@ -132,8 +194,9 @@ const categories: Category[] = [
         name: 'District 267',
         description: 'Premium padel & wellness club in Gaborone, Botswana.',
         execution: 'Market scan · Financial model · Investor deck · Local ops',
-        detail: 'Market analysis across 12 African countries. Financial model with 5-year projections, unit economics, scenarios. Investor deck. Partnership structuring with local operators — land, construction, management. Raising $300K for 25% equity. 19-20% IRR target. Opening Q4 2026.',
+        detail: 'Produced through the padel.design Full Advisory engagement. Market analysis across 12 African countries. Financial model with 5-year projections, unit economics, scenarios. Investor deck. Partnership structuring with local operators — land, construction, management. Raising $300K for 25% equity. 19-20% IRR target. Opening Q4 2026.',
         image: district267Img,
+        badge: 'En pause',
         url: 'https://district267.co.bw',
       },
       {
@@ -142,15 +205,41 @@ const categories: Category[] = [
         execution: 'Brand identity · Product design · Supply chain · E-commerce',
         detail: 'Brand from zero — name, positioning, visual identity. First racket line (ALPHA series) with manufacturing partner. Full supply chain from sourcing to fulfillment. E-commerce with reservation system. First drop: 50 units, targeted Q3 2026. Currently in sampling phase with manufacturing partner.',
         image: pandamoodImg,
+        badge: 'Prototype',
         url: 'https://pandamood.com',
       },
       {
         name: 'padel.design',
-        description: 'Advisory for padel club development in underserved markets.',
+        description: 'Advisory for padel club development in underserved markets. Delivered the District 267 dossier.',
         execution: 'Territory analysis · Feasibility · Club playbooks',
-        detail: 'Consulting offer for investors entering new padel markets. Three tiers: Market Scan ($2,500) — feasibility, go/no-go. Club Playbook ($7,500) — business architecture, investor docs. Full Advisory ($25,000+) — concept to opening. Target: Africa, GCC, Central Asia.',
+        detail: 'Consulting offer for investors entering new padel markets. Three tiers: Market Scan ($2,500) — feasibility, go/no-go. Club Playbook ($7,500) — business architecture, investor docs. Full Advisory ($25,000+) — concept to opening. Target: Africa, GCC, Central Asia. The Full Advisory tier has already delivered a complete dossier: District 267 in Gaborone — market analysis across 12 African countries, five-year financial model, investor deck and partnership structuring with local operators.',
         image: padeldesignImg,
+        badge: 'Live',
         url: 'https://padel.design',
+      },
+      {
+        name: 'Coach Gari',
+        description: 'Coaching business and influencer partnerships, run from one back-office.',
+        execution: 'Site · Booking · Payment hub · Brand partnerships · CRM · Back-office',
+        detail: 'A coach with a 23K audience earns two ways — sessions and brand partnerships — and the back-office runs both. Deals move from proposal to signed agreement to settlement, with commission origins, exemptions and per-line statements, beside a booking engine that holds slots across timezones for a coach who works from several locations. Built for one business, architected as a platform: 47 tables, 330 database functions, 19 edge functions. Authorisation is checked per permission on every write, and 16 pgTAP suites cover one domain each.',
+        capabilities: [
+          'Booking, availability rules & exceptions',
+          'Slots held across timezones',
+          'Tour stops with their own services',
+          'BEAU PH hub — Stripe & PayPal live',
+          'Mode-matched webhooks, never guessed',
+          'Brand deals: proposal → agreement → settlement',
+          'Commission origins & exemptions',
+          'Partner earnings & settlement statements',
+          'CRM with notes, consent management',
+          'Refunds & chargebacks',
+          'Email, WhatsApp & push outbox',
+          'Audience analytics — web and social',
+        ],
+        image: coachgariAccueilImg,
+        splitImages: { left: coachgariAccueilImg, right: coachgariBackofficeImg },
+        badge: 'Live',
+        url: 'https://coachgari28.com',
       },
     ],
   },
@@ -159,12 +248,13 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Les Vieilles Pierres',
-        description: 'Heritage hiking association in Brittany — public site and self-managed back-office.',
+        description: 'Heritage hiking association in Bretagne — public site and self-managed back-office.',
         execution: 'Full-stack build · Editorial site · Multi-role CMS · Embedded AI assistant',
         detail: 'Digital rebuild for a 50-year-old heritage hiking association in Quistinic, Morbihan. Since 1974. 130km of trails. Two layers in one build. Front: an editorial, responsive, accessible public site — trails, events, shop, gallery, contact. Back: a complete no-code admin space the volunteers run themselves, no developer needed. Supabase auth with whitelist access and role-based tabs (Messages, Orders, Content CMS, Contacts, Calendar, Statistics, Team, audit Journal). Per-page content editing, multi-photo upload with reordering, Resend email integration, Plausible analytics. The differentiator: "Souffleur IA", an embedded assistant with a plain-language user guide written for non-technical volunteers — they ask a question, it answers. Pro bono; my father is president.',
         image: lesvieillespierresHeroImg,
         imagePosition: 'object-center',
         gallery: [lesvieillespierresHeroImg, lesvieillespierresSouffleurImg, lesvieillespierresAdminImg],
+        badge: 'Live',
         url: 'https://lesvieillespierres.com',
       },
       {
@@ -180,6 +270,7 @@ const categories: Category[] = [
         execution: 'Funding · Information architecture · Web design · Copy',
         detail: 'Sponsored via Oolala Social. Digital transformation for grassroots foundation in Kibera. Information architecture, website, copy. Programs: 5,000+ kg waste/month, 50+ climate champions, 200+ jobs, 300+ athletes fed.',
         image: livegreatImg,
+        badge: 'Live',
         url: 'https://livegreatfoundation.netlify.app',
       },
     ],
