@@ -1,12 +1,16 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { VentureCard } from './VentureCard';
+import { cn } from '@/lib/utils';
 
 // Import portfolio images
 import beauImg from '@/assets/portfolio/beau.png';
 import beauAppImg from '@/assets/portfolio/beau-app.png';
 import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
 import bawabaLogoImg from '@/assets/portfolio/bawaba-logo.png';
+import consoleDashboardCropImg from '@/assets/portfolio/console-dashboard-crop.webp';
+import consoleRoutingCropImg from '@/assets/portfolio/console-routing-crop.webp';
+import consoleAuditCropImg from '@/assets/portfolio/console-audit-crop.webp';
 import consoleDashboardImg from '@/assets/portfolio/console-dashboard.webp';
 import consoleRoutingImg from '@/assets/portfolio/console-routing.webp';
 import consoleAuditImg from '@/assets/portfolio/console-audit.webp';
@@ -43,6 +47,7 @@ interface Venture {
   image: string;
   imagePosition?: string;
   splitImages?: { left: string; right: string };
+  stripImages?: string[];
   gallery?: string[];
   logo?: string;
   splitPortrait?: boolean;
@@ -90,6 +95,8 @@ const categories: Category[] = [
         logo: bawabaLogoImg,
         image: consoleDashboardImg,
         imagePosition: 'object-top',
+        // the card shows tight crops; the zoom and the sheet show the full pages
+        stripImages: [consoleDashboardCropImg, consoleRoutingCropImg, consoleAuditCropImg],
         gallery: [consoleDashboardImg, consoleRoutingImg, consoleAuditImg],
         badge: 'Dossier on request',
         url: 'https://bawaba.systems',
@@ -254,6 +261,7 @@ const categories: Category[] = [
         ],
         image: maisonsHeroImg,
         splitImages: { left: maisonsHeroImg, right: maisonsDashboardImg },
+        splitPortrait: true,
         badge: 'Live',
         url: 'https://maisons.co',
       },
@@ -454,7 +462,16 @@ function CategorySection({ category, categoryIndex }: { category: Category; cate
         </motion.header>
 
         {/* Ventures grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-6 md:gap-8">
+        {/* auto-fit stretches a lone card across the whole row, so a category with
+            one venture keeps the column width the others get instead. */}
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-6 md:gap-8',
+            category.ventures.length === 1
+              ? 'md:grid-cols-2'
+              : 'md:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(340px,1fr))]'
+          )}
+        >
           {category.ventures.map((venture, ventureIndex) => (
             <VentureCard key={venture.name} {...venture} index={ventureIndex} />
           ))}

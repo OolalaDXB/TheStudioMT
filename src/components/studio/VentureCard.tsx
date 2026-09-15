@@ -13,6 +13,7 @@ interface VentureCardProps {
   splitImages?: { left: string; right: string };
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
+  stripImages?: string[];
   gallery?: string[];
   logo?: string;
   url?: string;
@@ -288,31 +289,6 @@ function Lightbox({
   );
 }
 
-/**
- * The card face. When the project has a site it is a link, so the click lands on
- * the largest thing on the card instead of a 12px arrow. Without a URL it stays a
- * plain frame and the click falls through to the card, which opens the sheet.
- */
-function ImageFrame({
-  url, title, name, children,
-}: {
-  url?: string; title: string; name: string; children: React.ReactNode;
-}) {
-  if (!url) return <div className="relative">{children}</div>;
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={title}
-      aria-label={`${name} — ${title}`}
-      className="relative block focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-    >
-      {children}
-    </a>
-  );
-}
-
 export function VentureCard({
   name,
   description,
@@ -323,6 +299,7 @@ export function VentureCard({
   splitImages,
   splitPortrait = false,
   stackedImages,
+  stripImages,
   gallery,
   logo,
   url,
@@ -345,6 +322,11 @@ export function VentureCard({
       : gallery && gallery.length > 0
         ? gallery
         : [image];
+
+  const zoom = (start: number) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightbox({ images, start });
+  };
 
   const handleCardClick = (e: React.MouseEvent) => {
     // A real link handles its own click; everything else opens the sheet.
@@ -393,41 +375,65 @@ export function VentureCard({
           'hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(26,58,58,0.1)]'
         )}
       >
-        {/* Image area — the largest target on the card, so it is the link itself.
-            Cards with nowhere to go fall through to the card click and open the sheet. */}
-        <ImageFrame url={url} title={urlTitle} name={name}>
-          {logo && (
-            <div
-              className="flex items-center px-6 sm:px-8 pt-7 pb-6 border-b border-border"
-              /* the wordmark ships on an opaque #F6F4EF plate, so the band wears the
-                 same colour rather than framing it in a visible box */
-              style={{ backgroundColor: '#F6F4EF' }}
-            >
-              <img
-                src={logo}
-                alt={`${name} wordmark`}
-                loading="lazy"
-                decoding="async"
-                className="h-12 sm:h-[3.75rem] w-auto object-contain object-left"
-              />
-            </div>
-          )}
+        {/* Image area — the largest target on the card, and it enlarges the
+            captures. The name carries the link; a picture is for looking at. */}
+        {logo && (
+          <div
+            className="flex items-center px-6 sm:px-8 pt-7 pb-6 border-b border-border"
+            /* the wordmark ships on an opaque #F6F4EF plate, so the band wears the
+               same colour rather than framing it in a visible box */
+            style={{ backgroundColor: '#F6F4EF' }}
+          >
+            <img
+              src={logo}
+              alt={`${name} wordmark`}
+              loading="lazy"
+              decoding="async"
+              className="h-12 sm:h-[3.75rem] w-auto object-contain object-left"
+            />
+          </div>
+        )}
 
+        <div className="relative">
           {stackedImages ? (
             <div className="overflow-hidden">
               <div
-                className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden">
+                className="h-[180px] sm:h-[210px] md:h-[240px] overflow-hidden cursor-zoom-in"
+                onClick={zoom(0)}>
                 <img src={stackedImages.hero} alt={`${name} hero`} loading="lazy" decoding="async" className={imgClass('object-center')} />
               </div>
               <div
-                className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border">
+                className="h-[90px] sm:h-[105px] md:h-[120px] overflow-hidden border-t border-border cursor-zoom-in"
+                onClick={zoom(1)}>
                 <img src={stackedImages.small} alt={`${name} dashboard`} loading="lazy" decoding="async" className={imgClass('object-top')} />
               </div>
+            </div>
+          ) : stripImages ? (
+            <div className="flex h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden">
+              {stripImages.map((src, i) => (
+                <div
+                  key={src}
+                  className={cn(
+                    'flex-1 min-w-0 overflow-hidden cursor-zoom-in',
+                    i > 0 && 'border-l border-border/50'
+                  )}
+                  onClick={zoom(i)}
+                >
+                  <img
+                    src={src}
+                    alt={`${name} ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    className={imgClass('object-top')}
+                  />
+                </div>
+              ))}
             </div>
           ) : splitImages ? (
             <div className={cn('flex overflow-hidden', splitPortrait ? 'h-[320px] sm:h-[380px] md:h-[420px]' : 'h-[200px] sm:h-[240px] md:h-[280px]')}>
               <div
-                className="w-1/2 overflow-hidden">
+                className="w-1/2 overflow-hidden cursor-zoom-in"
+                onClick={zoom(0)}>
                 <img
                   src={splitImages.left}
                   alt={`${name} left`}
@@ -437,7 +443,8 @@ export function VentureCard({
                 />
               </div>
               <div
-                className="w-1/2 overflow-hidden border-l border-border/50">
+                className="w-1/2 overflow-hidden border-l border-border/50 cursor-zoom-in"
+                onClick={zoom(1)}>
                 <img
                   src={splitImages.right}
                   alt={`${name} right`}
@@ -449,7 +456,8 @@ export function VentureCard({
             </div>
           ) : (
             <div
-              className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative"
+              className="h-[200px] sm:h-[240px] md:h-[280px] overflow-hidden relative cursor-zoom-in"
+              onClick={zoom(0)}
               onMouseEnter={() => {
                 // Discreetly preload the rest of the gallery for the sheet
                 if (gallery && gallery.length > 1) {
@@ -483,7 +491,7 @@ export function VentureCard({
               {badge}
             </div>
           )}
-        </ImageFrame>
+        </div>
 
         {/* Content */}
         <div className="p-8">
