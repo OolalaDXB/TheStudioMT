@@ -14,7 +14,9 @@ interface VentureCardProps {
   stackedImages?: { hero: string; small: string };
   gallery?: string[];
   url?: string;
+  urlTitle?: string;
   secondaryUrl?: string;
+  secondaryTitle?: string;
   badge?: string;
   index: number;
 }
@@ -166,7 +168,9 @@ export function VentureCard({
   stackedImages,
   gallery,
   url,
+  urlTitle = 'Ouvrir le site',
   secondaryUrl,
+  secondaryTitle = 'Ouvrir la démo',
   badge,
   index,
 }: VentureCardProps) {
@@ -307,7 +311,7 @@ export function VentureCard({
                 rel="noopener noreferrer"
                 className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
                 onClick={(e) => e.stopPropagation()}
-                title="Ouvrir le site"
+                title={urlTitle}
               >
                 ↗
               </a>
@@ -319,7 +323,7 @@ export function VentureCard({
                 rel="noopener noreferrer"
                 className="arrow-link text-sm opacity-0 translate-x-[-8px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 hover:text-accent"
                 onClick={(e) => e.stopPropagation()}
-                title="Ouvrir la démo"
+                title={secondaryTitle}
               >
                 ↗
               </a>

@@ -9,6 +9,7 @@ import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
 import bawabaImg from '@/assets/portfolio/bawaba.png';
 import myoolalaLandingImg from '@/assets/portfolio/myoolala-landing.png';
 import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
+import myoolalaWalletPassImg from '@/assets/portfolio/myoolala-wallet-pass.jpg';
 import district267Img from '@/assets/portfolio/district267.png';
 import pandamoodImg from '@/assets/portfolio/pandamood.png';
 import padeldesignImg from '@/assets/portfolio/padeldesign.png';
@@ -39,7 +40,9 @@ interface Venture {
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
   url?: string;
+  urlTitle?: string;
   secondaryUrl?: string;
+  secondaryTitle?: string;
   badge?: string;
 }
 
@@ -60,7 +63,8 @@ const categories: Category[] = [
         image: bawabaImg,
         imagePosition: 'object-top',
         badge: 'Dossier sur demande',
-        url: 'https://github.com/OolalaDXB/bawaba-command',
+        url: 'https://bawaba.systems',
+        secondaryUrl: 'https://github.com/OolalaDXB/bawaba-command',
       },
     ],
   },
@@ -84,7 +88,7 @@ const categories: Category[] = [
         detail: 'Treasury management platform built on 16 years of payments infrastructure experience across 83 countries. Targets the gap between spreadsheet-driven treasury and enterprise TMS (Kyriba, ION). Cash visibility, FX exposure, payment orchestration. ISO 20022 native — not retrofitted. Strategic synergy with KM OpenPay for execution rails.',
         image: beauTreasuryImg,
         imagePosition: 'object-top',
-        url: 'https://www.thestudio.mt/',
+        badge: 'Prototype',
       },
     ],
   },
@@ -95,10 +99,21 @@ const categories: Category[] = [
         name: 'Sillon',
         description: 'Full-stack ERP for independent vinyl distributors. 128K+ lines of code.',
         execution: 'Domain modeling · Full-stack build · Database architecture · Marketplace · Pro portal',
-        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for Outre-National Records as pilot client. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
+        detail: 'The most comprehensive vertical ERP for independent vinyl distribution. 128,000+ lines of TypeScript/React/Node/PostgreSQL. Built for a pilot distributor, then generalised into a multi-tenant platform. Full domain model: catalog management, multi-format inventory (LP, CD, digital, merch) with warehouse location tracking, supplier management, purchase orders, consignment tracking, customer management (B2B professional + B2C), invoicing with French tax compliance, and analytics. Live Discogs Marketplace integration for automated selling. Professional client portal ("Powered by Sillon") with product catalog, cart, order history. Bulk order actions, CSV/Excel export. Sprint 16 complete. Designed as a replicable, white-label SaaS for the independent music industry. Zero direct competitor at this depth — Common Ground (€29-89/mo) only covers POS + eShop.',
         image: sillonImg,
         splitImages: { left: sillonImg, right: sillonDashboardImg },
-        url: 'https://www.sillom.me',
+        url: 'https://sillon.me',
+        secondaryUrl: 'https://sillon.me/t/demo-sillon',
+        secondaryTitle: 'Ouvrir la démo',
+      },
+      {
+        name: 'RLS Guard',
+        description: 'Security CI for multi-tenant Postgres. Catches tenant isolation breaks before they merge.',
+        execution: 'CLI · GitHub Action · Migration replay · Evidence report',
+        detail: 'Replays your migrations on an ephemeral Postgres, asserts four anti-leak invariants — RLS enabled on every tenant table, no permissive true policy reachable by an unprivileged role, no write policy blind to the tenant, no SECURITY DEFINER function without a caller-identity guard — and blocks the merge on a violation. No production secret is ever needed: the replay reads only your repository. Every green run emits a tenant isolation evidence report (JSON + self-contained HTML) you can attach to a security questionnaire. Written after an audit found three security controls that were all green and none of which measured anything.',
+        image: placeholderImg,
+        badge: 'Source disponible',
+        url: 'https://github.com/OolalaDXB/rls-guard',
       },
     ],
   },
@@ -110,9 +125,13 @@ const categories: Category[] = [
         description: 'Multi-view digital passport. One identity, many faces.',
         execution: 'Product design · Per-view architecture · Wallet integration · Stripe',
         detail: 'Digital identity platform with per-view functionality — show different content to different audiences (Social, Work, Exclusive). Each view has its own QR code and Apple Wallet pass. Integrated tipping, shop, and donation capabilities via Stripe. Email signature generator with Oo icon for organic distribution. Built with Lovable + Supabase.',
-        image: myoolalaLandingImg,
-        splitImages: { left: myoolalaLandingImg, right: myoolalaAppImg },
-        url: 'https://myoolala.com',
+        image: myoolalaWalletPassImg,
+        splitImages: { left: myoolalaWalletPassImg, right: myoolalaAppImg },
+        splitPortrait: true,
+        url: 'https://myoolala.com/u/mickael/social',
+        urlTitle: 'Voir un Oo en vrai',
+        secondaryUrl: 'https://myoolala.com/auth?tab=signup',
+        secondaryTitle: 'Créer votre Oo',
       },
       {
         name: 'Maisons.co',
@@ -132,8 +151,9 @@ const categories: Category[] = [
         name: 'District 267',
         description: 'Premium padel & wellness club in Gaborone, Botswana.',
         execution: 'Market scan · Financial model · Investor deck · Local ops',
-        detail: 'Market analysis across 12 African countries. Financial model with 5-year projections, unit economics, scenarios. Investor deck. Partnership structuring with local operators — land, construction, management. Raising $300K for 25% equity. 19-20% IRR target. Opening Q4 2026.',
+        detail: 'Produced through the padel.design Full Advisory engagement. Market analysis across 12 African countries. Financial model with 5-year projections, unit economics, scenarios. Investor deck. Partnership structuring with local operators — land, construction, management. Raising $300K for 25% equity. 19-20% IRR target. Opening Q4 2026.',
         image: district267Img,
+        badge: 'En pause',
         url: 'https://district267.co.bw',
       },
       {
@@ -142,15 +162,25 @@ const categories: Category[] = [
         execution: 'Brand identity · Product design · Supply chain · E-commerce',
         detail: 'Brand from zero — name, positioning, visual identity. First racket line (ALPHA series) with manufacturing partner. Full supply chain from sourcing to fulfillment. E-commerce with reservation system. First drop: 50 units, targeted Q3 2026. Currently in sampling phase with manufacturing partner.',
         image: pandamoodImg,
+        badge: 'Prototype',
         url: 'https://pandamood.com',
       },
       {
         name: 'padel.design',
-        description: 'Advisory for padel club development in underserved markets.',
+        description: 'Advisory for padel club development in underserved markets. Delivered the District 267 dossier.',
         execution: 'Territory analysis · Feasibility · Club playbooks',
-        detail: 'Consulting offer for investors entering new padel markets. Three tiers: Market Scan ($2,500) — feasibility, go/no-go. Club Playbook ($7,500) — business architecture, investor docs. Full Advisory ($25,000+) — concept to opening. Target: Africa, GCC, Central Asia.',
+        detail: 'Consulting offer for investors entering new padel markets. Three tiers: Market Scan ($2,500) — feasibility, go/no-go. Club Playbook ($7,500) — business architecture, investor docs. Full Advisory ($25,000+) — concept to opening. Target: Africa, GCC, Central Asia. The Full Advisory tier has already delivered a complete dossier: District 267 in Gaborone — market analysis across 12 African countries, five-year financial model, investor deck and partnership structuring with local operators.',
         image: padeldesignImg,
+        badge: 'En production',
         url: 'https://padel.design',
+      },
+      {
+        name: 'Coach Gari',
+        description: 'Booking, payments and back-office for an independent coaching business.',
+        execution: 'Site · Booking engine · Stripe Embedded Checkout · CRM · Back-office',
+        detail: 'Full production: public site, booking flow, payment hub with mode-matched Stripe (a webhook whose livemode disagrees with the configured mode is refused, never guessed), transactional email outbox, CRM, calendar and reports. Database hardened with 17 pgTAP suites and per-permission authorisation checks on every write.',
+        image: placeholderImg,
+        url: 'https://coachgari28.com',
       },
     ],
   },
@@ -159,7 +189,7 @@ const categories: Category[] = [
     ventures: [
       {
         name: 'Les Vieilles Pierres',
-        description: 'Heritage hiking association in Brittany — public site and self-managed back-office.',
+        description: 'Heritage hiking association in Bretagne — public site and self-managed back-office.',
         execution: 'Full-stack build · Editorial site · Multi-role CMS · Embedded AI assistant',
         detail: 'Digital rebuild for a 50-year-old heritage hiking association in Quistinic, Morbihan. Since 1974. 130km of trails. Two layers in one build. Front: an editorial, responsive, accessible public site — trails, events, shop, gallery, contact. Back: a complete no-code admin space the volunteers run themselves, no developer needed. Supabase auth with whitelist access and role-based tabs (Messages, Orders, Content CMS, Contacts, Calendar, Statistics, Team, audit Journal). Per-page content editing, multi-photo upload with reordering, Resend email integration, Plausible analytics. The differentiator: "Souffleur IA", an embedded assistant with a plain-language user guide written for non-technical volunteers — they ask a question, it answers. Pro bono; my father is president.',
         image: lesvieillespierresHeroImg,
