@@ -6,7 +6,9 @@ import { VentureCard } from './VentureCard';
 import beauImg from '@/assets/portfolio/beau.png';
 import beauAppImg from '@/assets/portfolio/beau-app.png';
 import beauGatewayImg from '@/assets/portfolio/beau-gateway.png';
-import bawabaImg from '@/assets/portfolio/bawaba.png';
+import consoleDashboardImg from '@/assets/portfolio/console-dashboard.webp';
+import consoleRoutingImg from '@/assets/portfolio/console-routing.webp';
+import consoleAuditImg from '@/assets/portfolio/console-audit.webp';
 import myoolalaLandingImg from '@/assets/portfolio/myoolala-landing.png';
 import myoolalaAppImg from '@/assets/portfolio/myoolala-app.png';
 import myoolalaWalletPassImg from '@/assets/portfolio/myoolala-wallet-pass.jpg';
@@ -83,8 +85,9 @@ const categories: Category[] = [
           'CISO dashboard',
           'Docker-ready deployment',
         ],
-        image: bawabaImg,
+        image: consoleDashboardImg,
         imagePosition: 'object-top',
+        gallery: [consoleDashboardImg, consoleRoutingImg, consoleAuditImg],
         badge: 'Dossier on request',
         url: 'https://bawaba.systems',
         urlTitle: 'Open the site',
