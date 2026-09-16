@@ -49,6 +49,7 @@ interface Venture {
   splitImages?: { left: string; right: string };
   stripImages?: string[];
   gallery?: string[];
+  embeds?: (string | undefined)[];
   logo?: string;
   splitPortrait?: boolean;
   stackedImages?: { hero: string; small: string };
@@ -239,9 +240,11 @@ const categories: Category[] = [
         ],
         image: myoolalaWalletPassImg,
         splitImages: { left: myoolalaWalletPassImg, right: myoolalaAppImg },
+        // the Sofia Reyes panel opens the live profile in the overlay, not a new tab
+        embeds: [undefined, 'https://myoolala.com/profile.html'],
         splitPortrait: true,
         badge: 'Live',
-        url: 'https://myoolala.com/profile.html',
+        url: 'https://myoolala.com',
         urlTitle: 'Open a live Oo',
         secondaryUrl: 'https://myoolala.com/auth?tab=signup',
         secondaryTitle: 'Create your Oo',

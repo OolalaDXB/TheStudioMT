@@ -15,6 +15,7 @@ interface VentureCardProps {
   stackedImages?: { hero: string; small: string };
   stripImages?: string[];
   gallery?: string[];
+  embeds?: (string | undefined)[];
   logo?: string;
   url?: string;
   urlTitle?: string;
@@ -155,11 +156,13 @@ function DetailModal({
 
 function Lightbox({
   images,
+  embeds,
   startIndex,
   alt,
   onClose,
 }: {
   images: string[];
+  embeds?: (string | undefined)[];
   startIndex: number;
   alt: string;
   onClose: () => void;
@@ -186,13 +189,16 @@ function Lightbox({
     return () => window.removeEventListener('keydown', onKey);
   }, [images.length, hasMany, onClose]);
 
-  // Discreet preload of the next image
+  // Discreet preload of the next capture — an embedded page loads itself
   useEffect(() => {
     if (!hasMany) return;
-    const nextSrc = images[(idx + 1) % images.length];
+    const next = (idx + 1) % images.length;
+    if (embeds?.[next]) return;
     const img = new Image();
-    img.src = nextSrc;
-  }, [idx, images, hasMany]);
+    img.src = images[next];
+  }, [idx, images, hasMany, embeds]);
+
+  const embedUrl = embeds?.[idx];
 
   return createPortal(
     <AnimatePresence>
@@ -211,18 +217,49 @@ function Lightbox({
           )}
         >
           <AnimatePresence mode="wait">
-            <motion.img
-              key={idx}
-              initial={{ scale: 0.94, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.94, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              src={images[idx]}
-              alt={alt}
-              decoding="async"
-              className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default select-none"
-              onClick={(e) => e.stopPropagation()}
-            />
+            {embedUrl ? (
+              <motion.div
+                key={`embed-${idx}`}
+                initial={{ scale: 0.94, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.94, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-[26rem] h-full max-h-[85vh] cursor-default
+                           rounded overflow-hidden shadow-2xl bg-card"
+              >
+                <iframe
+                  src={embedUrl}
+                  title={`${alt} — live`}
+                  className="w-full h-full border-0"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+                {/* a site refusing to be framed would leave a blank panel, so the way out is always visible */}
+                <a
+                  href={embedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full
+                             bg-black/60 text-white/90 hover:text-white backdrop-blur-sm
+                             font-body text-xs whitespace-nowrap transition-colors"
+                >
+                  Open in a new tab ↗
+                </a>
+              </motion.div>
+            ) : (
+              <motion.img
+                key={idx}
+                initial={{ scale: 0.94, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.94, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                src={images[idx]}
+                alt={alt}
+                decoding="async"
+                className="max-w-full max-h-full object-contain rounded shadow-2xl cursor-default select-none"
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
           </AnimatePresence>
 
           {hasMany && (
@@ -301,6 +338,7 @@ export function VentureCard({
   stackedImages,
   stripImages,
   gallery,
+  embeds,
   logo,
   url,
   urlTitle = 'Open the site',
@@ -353,6 +391,7 @@ export function VentureCard({
       {lightbox && (
         <Lightbox
           images={lightbox.images}
+          embeds={embeds}
           startIndex={lightbox.start}
           alt={name}
           onClose={() => setLightbox(null)}
@@ -502,13 +541,11 @@ export function VentureCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 title={urlTitle}
-                className="inline-flex items-baseline gap-2 transition-colors duration-300 hover:text-accent
+                className="border-b border-transparent transition-colors duration-300
+                           hover:text-accent hover:border-accent/40
                            focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-sm"
               >
                 {name}
-                <span aria-hidden="true" className="text-[0.9rem] text-warm-muted transition-colors duration-300 group-hover:text-accent">
-                  ↗
-                </span>
               </a>
             ) : (
               name
